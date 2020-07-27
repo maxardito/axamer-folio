@@ -5,17 +5,14 @@
   padding-left: 2vw;
   color: white;
   width: 100vw;
-  z-index: -1;
+  z-index: 1;
 }
 
 .viewBox {
   position: absolute;
-  width: auto;
+  width: 100vw;
   top: 12vw;
-  left: 2vw;
-  height: auto;
-  padding: 1%;
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  z-index: -1;
+  height: 100vh;
+  border: 4px solid #000000;
+  z-index: -4;
 }
