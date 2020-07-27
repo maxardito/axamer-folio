@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: "Fira Code";
+  background-color: gray;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

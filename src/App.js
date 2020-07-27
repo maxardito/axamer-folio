@@ -6,8 +6,8 @@ import Rendering from "./components/Rendering.js";
 function App() {
   return (
     <div className="App">
-      <Rendering />
       <Main />
+      <Rendering />
     </div>
   );
 }
