@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Style from "./main.module.scss";
 //import ReactPlayer from "react-player/lazy";
 import {
