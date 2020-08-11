@@ -2,9 +2,9 @@ import React from "react";
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
-import Rendering from "./Rendering.js";
+//import Rendering from "./Rendering.js";
 
-import Movements from "./Movements.json"
+//import Movements from "./Movements.json"
 
 const Main = () => {
   return (
