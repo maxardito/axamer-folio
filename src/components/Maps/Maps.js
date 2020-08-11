@@ -331,7 +331,7 @@ const Maps = () => {
 
     const center = {
         lat: 47.23037,
-        lng: 10.98016,
+        lng: 10.6016,
     };
 
     const options = {
