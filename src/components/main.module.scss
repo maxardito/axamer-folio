@@ -3,14 +3,48 @@
   font-size: 15vh;
   text-align: left;
   padding-left: 2vw;
+  height: 17vh;
   color: white;
-  width: auto;
+  width: 98vw;
   z-index: 1;
+
+  // Gradients
+  background: gray;
 }
 
-.viewBox {
-  position: absolute;
+.controlPanel {
+  position: relative;
+  height: 81.5vh;
   top: 17vh;
+  width: 50vw;
   border: 0.5vw solid black;
-  z-index: -4;
+  color: white;
+  border-bottom: none;
+  opacity: 0.9;
+  z-index: 2;
+  overflow: scroll;
+  background: blue;
+}
+
+.reactPlayerContainer {
+  position: relative;
+  width: 40vw;
+  height: 23vw;
+  top: 2vw;
+  left: 4vw;
+  border: 1vw solid white;
+  margin-bottom: 4vw;
+}
+
+.ensembleInfo {
+  position: relative;
+  padding-top: 1vw;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  text-align: justify;
+}
+.rendering {
+  position: fixed;
+  background-color: black;
+  top: 1vw;
 }
