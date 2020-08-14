@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
@@ -7,6 +7,7 @@ import Maps from "./Maps/Maps.js"
 //import Movements from "./Movements.json"
 
 const Main = () => {
+  const ref = createRef()
   return (
     <>
       {/*<div className={Style.rendering}>
@@ -16,13 +17,14 @@ const Main = () => {
         <div className={Style.title}>
           AXAMER FOLIO
         </div>
-        <Maps />
+        <Maps videoRef={ref} />
       </div>
       <div className={Style.controlPanel}>
         <div className={Style.reactPlayerContainer}>
           <ReactPlayer
-            url="https://vimeo.com/320352457"
-            playing={false}
+            ref={ref}
+            url="https://www.youtube.com/watch?v=P-rt_hj6VAk"
+            playing={true}
             width="100%"
             height="100%"
           />

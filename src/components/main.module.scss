@@ -14,33 +14,34 @@
 
 .controlPanel {
   position: relative;
+  float:right;
   height: 81.5vh;
   top: 17vh;
-  width: 50vw;
+  width: 33.3vw;
   border: 0.5vw solid black;
   color: white;
   border-bottom: none;
   opacity: 0.9;
   z-index: 2;
   overflow: scroll;
-  background: blue;
+  background: black;
 }
 
 .reactPlayerContainer {
   position: relative;
-  width: 40vw;
-  height: 23vw;
+  width: 30vw;
+  height: 17vw;
   top: 2vw;
-  left: 4vw;
-  border: 1vw solid white;
+  left: 1.3vw;
+  border: 0.3vw solid white;
   margin-bottom: 4vw;
 }
 
 .ensembleInfo {
   position: relative;
   padding-top: 1vw;
-  padding-left: 3vw;
-  padding-right: 3vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
   text-align: justify;
 }
 .rendering {
