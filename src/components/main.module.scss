@@ -1,9 +1,9 @@
 .title {
   position: absolute;
-  font-size: 15vh;
+  font-size: 10vh;
   text-align: left;
   padding-left: 2vw;
-  height: 17vh;
+  height: 12vh;
   color: white;
   width: 98vw;
   z-index: 1;
@@ -15,8 +15,8 @@
 .controlPanel {
   position: relative;
   float:right;
-  height: 81.5vh;
-  top: 17vh;
+  height: 87vh;
+  top: 12vh;
   width: 33.3vw;
   border: 0.5vw solid black;
   color: white;
@@ -24,6 +24,7 @@
   opacity: 0.9;
   z-index: 2;
   overflow: scroll;
+  font-size: 1em;
   background: black;
 }
 
@@ -44,6 +45,7 @@
   padding-right: 2vw;
   text-align: justify;
 }
+
 .rendering {
   position: fixed;
   background-color: black;

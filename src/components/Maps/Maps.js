@@ -2,29 +2,17 @@ import React, { useState } from "react";
 import {
     GoogleMap,
     useLoadScript,
-    Polygon,
     Marker,
     InfoWindow,
 } from "@react-google-maps/api";
-import mapStyles from "./MapStyles.js";
-import Movements from "../Movements.json";
 
+import mapStyles from "./MapStyles.js";
+import Journey from "../Journey/Journey.js";
+import Journeys from "../Journey/Journeys.json";
+import Movements from "../Movements.json";
 import Style from "./maps.module.scss";
 
-function sortModules(sequence) {
-    return Object.keys(Movements.metadata)
-        .map(a => ({ [a]: Movements.metadata[a] }))
-        .sort((a, b) => (sequence.indexOf(Object.keys(a)[0]) + 1) - (sequence.indexOf(Object.keys(b)[0]) + 1));
-}
-
 const Maps = ({ videoRef }) => {
-    const PATCHWORK_SEQ = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        11, 12, 13, 14, 15, 16, 17, 18,
-        19, 20, 21, 22, 23, 24
-    ];
-
-    const PATCHWORK_PATH = sortModules(PATCHWORK_SEQ);
 
     const libraries = [null];
 
@@ -35,7 +23,7 @@ const Maps = ({ videoRef }) => {
 
     const mapContainerStyle = {
         width: "99vw",
-        height: "81.5vh",
+        height: "86.5vh",
     };
 
     const center = {
@@ -48,34 +36,6 @@ const Maps = ({ videoRef }) => {
         disableDefaultUI: true,
         mapTypeId: "hybrid",
     };
-
-    const route1 = {
-        strokeColor: 'blue',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35,
-        clickable: false,
-        draggable: false,
-        editable: false,
-        visible: true,
-        radius: 30000,
-        zIndex: 1
-    }
-
-    /*const route2 = {
-        strokeColor: 'yellow',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: 'green',
-        fillOpacity: 0.35,
-        clickable: false,
-        draggable: false,
-        editable: false,
-        visible: true,
-        radius: 30000,
-        zIndex: 1
-    }*/
 
     const [selected, setSelected] = useState(null);
 
@@ -91,39 +51,27 @@ const Maps = ({ videoRef }) => {
                 options={options}
                 center={center}
             >
-                <Polygon
-                    paths={PATCHWORK_PATH.map((module, key) => {
-                        return {
-                            lat: module[key].lat,
-                            lng: module[key].lng
-                        }
-                    })}
-                    options={route1}
-                />
-                {/*
-                TODO: Polygons should eventually be mapped
-                <Polygon
-                    paths={TEST_PATH.map((module, key) => {
-                        return {
-                            lat: module[key].lat,
-                            lng: module[key].lng
-                        }
-                    })}
-                    options={route2}
-                />*/}
-                {Movements.metadata.map((module) => (
-                    <Marker key={module.id} position={{ lat: module.lat, lng: module.lng }} icon={{
+                {/** Journeys (renditions) by different ensembles */}
+                {Journeys.metadata.map((journey, key) => {
+                    return <Journey sequence={journey.sequence} strokeColor={journey.strokeColor} fillColor={journey.fillColor} key={key} />
+                })}
+
+                {/** Pins, text bubbles, markers */}
+                {Movements.metadata.map((pin) => (
+                    <Marker key={pin.id} position={{ lat: pin.lat, lng: pin.lng }} icon={{
                         url: '/pin.png',
                         scaledSize: new window.google.maps.Size(30, 30),
                         origin: new window.google.maps.Point(0, 0),
                         anchor: new window.google.maps.Point(15, 15)
                     }}
                         onClick={() => {
-                            setSelected(module)
+                            setSelected(pin)
                             videoRef.current.seekTo(Math.floor(Math.random() * Math.floor(1161)))
                         }}
                     />
                 ))}
+
+                {/** Pin bubble pop-up logic */}
                 {selected ? (
                     <InfoWindow position={{ lat: selected.lat, lng: selected.lng }}>
                         <div style={{ width: "20vw" }}>
