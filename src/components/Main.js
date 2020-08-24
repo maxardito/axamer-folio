@@ -8,6 +8,7 @@ import Maps from "./Maps/Maps.js"
 
 const Main = () => {
   const ref = createRef()
+
   return (
     <>
       {/*<div className={Style.rendering}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     GoogleMap,
     useLoadScript,
@@ -12,9 +12,9 @@ import Journeys from "../Journey/Journeys.json";
 import Movements from "../Movements.json";
 import Style from "./maps.module.scss";
 
-const Maps = ({ videoRef }) => {
+const libraries = [null];
 
-    const libraries = [null];
+const Maps = ({ videoRef }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -37,7 +37,26 @@ const Maps = ({ videoRef }) => {
         mapTypeId: "hybrid",
     };
 
+
+    /**
+     * ANCHOR: This section controls pin drop bubbles
+     * from video time stamps. Unfortunately the time stamps
+     * are floating point values, and the interval in the useEffect
+     * hook runs every millisecond. Maybe there's a way to sync
+     * these two things up?
+     */
     const [selected, setSelected] = useState(null);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSelected(Movements.metadata[3])
+            if (videoRef.current.getCurrentTime() >= 3) {
+                //console.log(videoRef.current.getCurrentTime())
+                setSelected(Movements.metadata[9])
+            }
+        }, 1);
+        return () => clearInterval(interval);
+    }, [videoRef]);
 
 
     if (loadError) return "Error loading maps";
@@ -53,17 +72,25 @@ const Maps = ({ videoRef }) => {
             >
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
-                    return <Journey sequence={journey.sequence} strokeColor={journey.strokeColor} fillColor={journey.fillColor} key={key} />
+                    return <Journey
+                        sequence={journey.sequence}
+                        strokeColor={journey.strokeColor}
+                        fillColor={journey.fillColor}
+                        key={key}
+                    />
                 })}
 
                 {/** Pins, text bubbles, markers */}
                 {Movements.metadata.map((pin) => (
-                    <Marker key={pin.id} position={{ lat: pin.lat, lng: pin.lng }} icon={{
-                        url: '/pin.png',
-                        scaledSize: new window.google.maps.Size(30, 30),
-                        origin: new window.google.maps.Point(0, 0),
-                        anchor: new window.google.maps.Point(15, 15)
-                    }}
+                    <Marker
+                        key={pin.id}
+                        position={{ lat: pin.lat, lng: pin.lng }}
+                        icon={{
+                            url: '/pin.png',
+                            scaledSize: new window.google.maps.Size(30, 30),
+                            origin: new window.google.maps.Point(0, 0),
+                            anchor: new window.google.maps.Point(15, 15)
+                        }}
                         onClick={() => {
                             setSelected(pin)
                             videoRef.current.seekTo(Math.floor(Math.random() * Math.floor(1161)))
