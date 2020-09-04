@@ -26,33 +26,42 @@ const Maps = ({ videoRef }) => {
         height: "86.5vh",
     };
 
-    const center = {
+    const CENTER = {
         lat: 47.18037,
         lng: 11.4516,
     };
+
+    const MAP_BOUNDARIES = {
+        north: 47.3427,
+        south: 47.038580,
+        east: 11.8588,
+        west: 10.900
+    }
 
     const options = {
         styles: mapStyles,
         disableDefaultUI: true,
         mapTypeId: "hybrid",
+        minZoom: 12,
+        restriction: {
+            latLngBounds: MAP_BOUNDARIES,
+            strictBounds: false
+        }
     };
 
-
-    /**
-     * ANCHOR: This section controls pin drop bubbles
-     * from video time stamps. Unfortunately the time stamps
-     * are floating point values, and the interval in the useEffect
-     * hook runs every millisecond. Maybe there's a way to sync
-     * these two things up?
-     */
     const [selected, setSelected] = useState(null);
 
     useEffect(() => {
+        let gate = false;
+        let counter = 0;
+        let currentJourney = Journeys.metadata[0]
+        setSelected(Movements.metadata[currentJourney.sequence[counter]])
         const interval = setInterval(() => {
-            setSelected(Movements.metadata[3])
-            if (videoRef.current.getCurrentTime() >= 3) {
-                //console.log(videoRef.current.getCurrentTime())
-                setSelected(Movements.metadata[9])
+            if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
+                if (gate === false) {
+                    setSelected(Movements.metadata[currentJourney.sequence[counter]])
+                    counter++;
+                }
             }
         }, 1);
         return () => clearInterval(interval);
@@ -68,7 +77,7 @@ const Maps = ({ videoRef }) => {
                 mapContainerStyle={mapContainerStyle}
                 zoom={11}
                 options={options}
-                center={center}
+                center={CENTER}
             >
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
