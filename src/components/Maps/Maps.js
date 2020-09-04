@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     GoogleMap,
     useLoadScript,
@@ -12,9 +12,9 @@ import Journeys from "../Journey/Journeys.json";
 import Movements from "../Movements.json";
 import Style from "./maps.module.scss";
 
-const Maps = ({ videoRef }) => {
+const libraries = [null];
 
-    const libraries = [null];
+const Maps = ({ videoRef }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -26,18 +26,46 @@ const Maps = ({ videoRef }) => {
         height: "86.5vh",
     };
 
-    const center = {
+    const CENTER = {
         lat: 47.18037,
         lng: 11.4516,
     };
+
+    const MAP_BOUNDARIES = {
+        north: 47.3427,
+        south: 47.038580,
+        east: 11.8588,
+        west: 10.900
+    }
 
     const options = {
         styles: mapStyles,
         disableDefaultUI: true,
         mapTypeId: "hybrid",
+        minZoom: 12,
+        restriction: {
+            latLngBounds: MAP_BOUNDARIES,
+            strictBounds: false
+        }
     };
 
     const [selected, setSelected] = useState(null);
+
+    useEffect(() => {
+        let gate = false;
+        let counter = 0;
+        let currentJourney = Journeys.metadata[0]
+        setSelected(Movements.metadata[currentJourney.sequence[counter]])
+        const interval = setInterval(() => {
+            if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
+                if (gate === false) {
+                    setSelected(Movements.metadata[currentJourney.sequence[counter]])
+                    counter++;
+                }
+            }
+        }, 1);
+        return () => clearInterval(interval);
+    }, [videoRef]);
 
 
     if (loadError) return "Error loading maps";
@@ -49,21 +77,29 @@ const Maps = ({ videoRef }) => {
                 mapContainerStyle={mapContainerStyle}
                 zoom={11}
                 options={options}
-                center={center}
+                center={CENTER}
             >
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
-                    return <Journey sequence={journey.sequence} strokeColor={journey.strokeColor} fillColor={journey.fillColor} key={key} />
+                    return <Journey
+                        sequence={journey.sequence}
+                        strokeColor={journey.strokeColor}
+                        fillColor={journey.fillColor}
+                        key={key}
+                    />
                 })}
 
                 {/** Pins, text bubbles, markers */}
                 {Movements.metadata.map((pin) => (
-                    <Marker key={pin.id} position={{ lat: pin.lat, lng: pin.lng }} icon={{
-                        url: '/pin.png',
-                        scaledSize: new window.google.maps.Size(30, 30),
-                        origin: new window.google.maps.Point(0, 0),
-                        anchor: new window.google.maps.Point(15, 15)
-                    }}
+                    <Marker
+                        key={pin.id}
+                        position={{ lat: pin.lat, lng: pin.lng }}
+                        icon={{
+                            url: '/pin.png',
+                            scaledSize: new window.google.maps.Size(30, 30),
+                            origin: new window.google.maps.Point(0, 0),
+                            anchor: new window.google.maps.Point(15, 15)
+                        }}
                         onClick={() => {
                             setSelected(pin)
                             videoRef.current.seekTo(Math.floor(Math.random() * Math.floor(1161)))
