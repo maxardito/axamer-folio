@@ -57,7 +57,7 @@ const Main = () => {
         {Journeys.metadata.map((journey, key) => {
           return (
             <>
-              <Checkbox size="big" isChecked={visible[key]} onChange={setVisible([true, false, false])}
+              <Checkbox size="big" isChecked={visible[key]} onChange={setVisible}
                 color={journey.fillColor} />
               {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
               <hr />
