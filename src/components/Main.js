@@ -13,7 +13,7 @@ const Main = () => {
   const ref = createRef()
 
   const [visible, setVisible] = useState([true, false, false])
-
+  const [dropDown, setDropDown] = useState(false);
   return (
     <>
       {/*<div className={Style.rendering}>
@@ -24,9 +24,9 @@ const Main = () => {
           AXAMER FOLIO
           <img
             src={"/pin.png"}
-            width={"5.5%"}
             className={Style.ensembleMenuHamburger}
             alt={"Ensemble Menu"}
+            onClick={() => { setDropDown(!dropDown) }}
           />
         </div>
         <Maps videoRef={ref} journeyVisibility={visible} />
@@ -36,7 +36,7 @@ const Main = () => {
           <ReactPlayer
             ref={ref}
             url="https://www.youtube.com/watch?v=P-rt_hj6VAk"
-            playing={false}
+            playing={true}
             width="100%"
             height="100%"
           />
@@ -53,18 +53,32 @@ const Main = () => {
           mollit anim id est laborum.
         </div>
       </div>
-      <div className={Style.ensembleMenuPanel}>
-        {Journeys.metadata.map((journey, key) => {
-          return (
-            <>
-              <Checkbox size="big" isChecked={visible[key]} onChange={setVisible}
-                color={journey.fillColor} />
-              {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
-              <hr />
-            </>
-          )
-        })}
-      </div>
+      {/** Dropdown ensemble menu logic */}
+      {dropDown ? (
+        <div className={Style.ensembleMenuPanel}>
+          {Journeys.metadata.map((journey, key) => {
+            return (
+              <>
+                <Checkbox
+                  size="big"
+                  isChecked={visible[key]}
+                  onChange={() => {
+                    let v = visible[key];
+
+                    let nextArray = visible.slice();
+                    nextArray[key] = !v;
+
+                    setVisible(nextArray);
+
+                  }}
+                  color={journey.fillColor} />
+                {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
+                <hr />
+              </>
+            )
+          })}
+        </div>
+      ) : null}
     </>
   );
 };

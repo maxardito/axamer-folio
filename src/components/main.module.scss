@@ -14,8 +14,12 @@
 
 .ensembleMenuHamburger{
   float: right; 
+  width: 10vh;
   padding-right: 1vw;
   padding-top: 0.5vw;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .controlPanel {
