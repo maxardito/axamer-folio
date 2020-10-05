@@ -14,7 +14,7 @@ import Style from "./maps.module.scss";
 
 const libraries = [null];
 
-const Maps = ({ videoRef }) => {
+const Maps = ({ videoRef, journeyVisibility }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -27,14 +27,14 @@ const Maps = ({ videoRef }) => {
     };
 
     const CENTER = {
-        lat: 47.18037,
-        lng: 11.4516,
+        lat: 47.38037,
+        lng: 11.8516,
     };
 
     const MAP_BOUNDARIES = {
-        north: 47.3427,
-        south: 47.038580,
-        east: 11.8588,
+        north: 47.3827,
+        south: 47.000580,
+        east: 12.0588,
         west: 10.900
     }
 
@@ -42,7 +42,7 @@ const Maps = ({ videoRef }) => {
         styles: mapStyles,
         disableDefaultUI: true,
         mapTypeId: "hybrid",
-        minZoom: 12,
+        minZoom: 11,
         restriction: {
             latLngBounds: MAP_BOUNDARIES,
             strictBounds: false
@@ -82,6 +82,7 @@ const Maps = ({ videoRef }) => {
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
                     return <Journey
+                        visible={journeyVisibility[key]}
                         sequence={journey.sequence}
                         strokeColor={journey.strokeColor}
                         fillColor={journey.fillColor}

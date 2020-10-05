@@ -12,6 +12,16 @@
   background: gray;
 }
 
+.ensembleMenuHamburger{
+  float: right; 
+  width: 10vh;
+  padding-right: 1vw;
+  padding-top: 0.5vw;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .controlPanel {
   position: relative;
   float:right;
@@ -26,6 +36,20 @@
   overflow: scroll;
   font-size: 1em;
   background: black;
+}
+
+.ensembleMenuPanel {
+    position: absolute;
+    right: 0;
+    height: auto;
+    top: 12vh;
+    width: 33.3vw;
+    border: 0.5vw solid black;
+    color: white;
+    z-index: 3;
+    overflow: scroll;
+    font-size: 1em;
+    background: gray;
 }
 
 .reactPlayerContainer {
@@ -50,4 +74,19 @@
   position: fixed;
   background-color: black;
   top: 1vw;
+}
+
+
+/**
+* Removes borders from input
+*/
+input.middle:focus {
+    outline-width: 0;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }

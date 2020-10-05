@@ -1,7 +1,10 @@
-import React, { createRef } from "react";
+import React, { useState, createRef } from "react";
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
+import Journeys from "./Journey/Journeys.json";
+
+import Checkbox from "react-checkbox-component"
 //import Rendering from "./Rendering.js";
 
 //import Movements from "./Movements.json"
@@ -9,6 +12,8 @@ import Maps from "./Maps/Maps.js"
 const Main = () => {
   const ref = createRef()
 
+  const [visible, setVisible] = useState([true, false, false])
+  const [dropDown, setDropDown] = useState(false);
   return (
     <>
       {/*<div className={Style.rendering}>
@@ -17,8 +22,14 @@ const Main = () => {
       <div style={{ position: "relative" }}>
         <div className={Style.title}>
           AXAMER FOLIO
+          <img
+            src={"/pin.png"}
+            className={Style.ensembleMenuHamburger}
+            alt={"Ensemble Menu"}
+            onClick={() => { setDropDown(!dropDown) }}
+          />
         </div>
-        <Maps videoRef={ref} />
+        <Maps videoRef={ref} journeyVisibility={visible} />
       </div>
       <div className={Style.controlPanel}>
         <div className={Style.reactPlayerContainer}>
@@ -42,6 +53,32 @@ const Main = () => {
           mollit anim id est laborum.
         </div>
       </div>
+      {/** Dropdown ensemble menu logic */}
+      {dropDown ? (
+        <div className={Style.ensembleMenuPanel}>
+          {Journeys.metadata.map((journey, key) => {
+            return (
+              <>
+                <Checkbox
+                  size="big"
+                  isChecked={visible[key]}
+                  onChange={() => {
+                    let v = visible[key];
+
+                    let nextArray = visible.slice();
+                    nextArray[key] = !v;
+
+                    setVisible(nextArray);
+
+                  }}
+                  color={journey.fillColor} />
+                {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
+                <hr />
+              </>
+            )
+          })}
+        </div>
+      ) : null}
     </>
   );
 };

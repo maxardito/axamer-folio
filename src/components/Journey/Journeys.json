@@ -3,6 +3,8 @@
         {
             "id": 0,
             "name": "Patchwork",
+            "venue": "Space",
+            "date": "09/17/20",
             "sequence": [
                 0,
                 9,
@@ -35,6 +37,74 @@
             ],
             "strokeColor": "white",
             "fillColor": "yellow"
+        },
+        {
+            "id": 0,
+            "name": "Ensemble B",
+            "venue": "Space",
+            "date": "09/17/20",
+            "sequence": [
+                4,
+                1,
+                18,
+                10,
+                19,
+                6,
+                5,
+                2,
+                3,
+                20,
+                11,
+                13,
+                14
+            ],
+            "timeStamps": [
+                0,
+                77,
+                104,
+                176,
+                207,
+                221,
+                245,
+                293,
+                618,
+                685,
+                733,
+                775,
+                915
+            ],
+            "strokeColor": "orange",
+            "fillColor": "blue"
+        },
+        {
+            "id": 0,
+            "name": "Ensemble B",
+            "venue": "Space",
+            "date": "09/17/20",
+            "sequence": [
+                2,
+                15,
+                13,
+                11,
+                10,
+                3,
+                4,
+                8,
+                9
+            ],
+            "timeStamps": [
+                0,
+                77,
+                104,
+                176,
+                207,
+                221,
+                245,
+                293,
+                618
+            ],
+            "strokeColor": "purple",
+            "fillColor": "red"
         }
     ]
 }

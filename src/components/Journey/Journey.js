@@ -13,7 +13,7 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor }) => {
+const Journey = ({ sequence, strokeColor, fillColor, visible }) => {
     const option = {
         strokeColor: strokeColor,
         strokeOpacity: 0.8,
@@ -23,7 +23,7 @@ const Journey = ({ sequence, strokeColor, fillColor }) => {
         clickable: false,
         draggable: false,
         editable: false,
-        visible: true,
+        visible: visible,
         radius: 30000,
         zIndex: 1
     }
