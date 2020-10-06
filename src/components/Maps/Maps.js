@@ -57,13 +57,15 @@ const Maps = ({ videoRef, journeyVisibility }) => {
         let currentJourney = Journeys.metadata[0]
         setSelected(Movements.metadata[currentJourney.sequence[counter]])
         const interval = setInterval(() => {
-            if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
-                if (gate === false) {
-                    setSelected(Movements.metadata[currentJourney.sequence[counter]])
-                    counter++;
+            if (videoRef.current) {
+                if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
+                    if (gate === false) {
+                        setSelected(Movements.metadata[currentJourney.sequence[counter]])
+                        counter++;
+                    }
                 }
             }
-        }, 1);
+        }, 500);
         return () => clearInterval(interval);
     }, [videoRef]);
 
