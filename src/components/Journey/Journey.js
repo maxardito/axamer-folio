@@ -13,7 +13,7 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor, visible }) => {
+const Journey = ({ sequence, strokeColor, fillColor, visible, selected }) => {
     const option = {
         strokeColor: strokeColor,
         strokeOpacity: 0.8,
@@ -27,7 +27,7 @@ const Journey = ({ sequence, strokeColor, fillColor, visible }) => {
         radius: 30000,
         zIndex: 1
     }
-
+    // TODO: Current selected pin should be different colored line
     return (
         <Polygon
             paths={sequence.map((num, key) => {

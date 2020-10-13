@@ -14,7 +14,7 @@ import Style from "./maps.module.scss";
 
 const libraries = [null];
 
-const Maps = ({ videoRef, journeyVisibility }) => {
+const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -28,13 +28,18 @@ const Maps = ({ videoRef, journeyVisibility }) => {
 
     const CENTER = {
         lat: 47.38037,
-        lng: 11.8516,
+        lng: 11.3516,
+    };
+
+    const DOCMODE_CENTER = {
+        lat: 47.38037,
+        lng: 11.5516,
     };
 
     const MAP_BOUNDARIES = {
         north: 47.3827,
         south: 47.000580,
-        east: 12.0588,
+        east: 12.8588,
         west: 10.900
     }
 
@@ -54,7 +59,6 @@ const Maps = ({ videoRef, journeyVisibility }) => {
     useEffect(() => {
         let gate = false;
         let counter = 0;
-        let currentJourney = Journeys.metadata[0]
         setSelected(Movements.metadata[currentJourney.sequence[counter]])
         const interval = setInterval(() => {
             if (videoRef.current) {
@@ -67,7 +71,7 @@ const Maps = ({ videoRef, journeyVisibility }) => {
             }
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef]);
+    }, [videoRef, currentJourney]);
 
 
     if (loadError) return "Error loading maps";
@@ -79,7 +83,7 @@ const Maps = ({ videoRef, journeyVisibility }) => {
                 mapContainerStyle={mapContainerStyle}
                 zoom={11}
                 options={options}
-                center={CENTER}
+                center={docMode ? DOCMODE_CENTER : CENTER}
             >
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
@@ -87,8 +91,9 @@ const Maps = ({ videoRef, journeyVisibility }) => {
                         visible={journeyVisibility[key]}
                         sequence={journey.sequence}
                         strokeColor={journey.strokeColor}
-                        fillColor={journey.fillColor}
+                        fillColor={docMode ? "gray" : journey.fillColor}
                         key={key}
+                        selected={selected}
                     />
                 })}
 
@@ -98,7 +103,7 @@ const Maps = ({ videoRef, journeyVisibility }) => {
                         key={pin.id}
                         position={{ lat: pin.lat, lng: pin.lng }}
                         icon={{
-                            url: '/pin.png',
+                            url: docMode ? (selected.id === pin.id ? '/pin.png' : '/dot.png') : '/pin.png',
                             scaledSize: new window.google.maps.Size(30, 30),
                             origin: new window.google.maps.Point(0, 0),
                             anchor: new window.google.maps.Point(15, 15)
