@@ -1,14 +1,12 @@
-import React, { useState, useContext, createRef } from "react";
+import React, { useState, createRef } from "react";
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
 
 import Checkbox from "react-checkbox-component"
-import { SelectedTownContext } from "../contexts/SelectedTown.js"
 //import Rendering from "./Rendering.js";
 
-import Movements from "./Movements.json"
 
 const Main = () => {
   const ref = createRef()
@@ -62,7 +60,7 @@ const Main = () => {
           />
         </div>
         <div className={Style.scoreWrapper}>
-          <iframe src={"score/1.pdf#toolbar=0&navpanes=0"} style={{ width: "47vw", height: "30vw" }} />
+          <iframe title={"score"} src={"score/1.pdf#toolbar=0&navpanes=0"} style={{ width: "47vw", height: "30vw" }} />
         </div>
       </div>
       {/** Dropdown ensemble menu logic */}

@@ -137,7 +137,7 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
                 {selectedTown ? (
                     <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
                         <div style={{ width: "30vw" }}>
-                            <iframe src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />
+                            <iframe title={"header"} src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />
                         </div>
                     </InfoWindow>
                 ) : null}
