@@ -1,19 +1,25 @@
-import React, { useState, createRef } from "react";
+import React, { useState, useContext, createRef } from "react";
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
 
 import Checkbox from "react-checkbox-component"
+import { SelectedTownContext } from "../contexts/SelectedTown.js"
 //import Rendering from "./Rendering.js";
 
-//import Movements from "./Movements.json"
+import Movements from "./Movements.json"
 
 const Main = () => {
   const ref = createRef()
 
   const [visible, setVisible] = useState([true, false, false])
   const [dropDown, setDropDown] = useState(false);
+  const [docMode, setDocMode] = useState(true);
+  const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
+
+  //const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
+
   return (
     <>
       {/*<div className={Style.rendering}>
@@ -22,6 +28,11 @@ const Main = () => {
       <div style={{ position: "relative" }}>
         <div className={Style.title}>
           AXAMER FOLIO
+          <Checkbox
+            size="big"
+            isChecked={docMode}
+            onChange={() => { setDocMode(!docMode) }}
+            color={"black"} />
           <img
             src={"/pin.png"}
             className={Style.ensembleMenuHamburger}
@@ -29,28 +40,29 @@ const Main = () => {
             onClick={() => { setDropDown(!dropDown) }}
           />
         </div>
-        <Maps videoRef={ref} journeyVisibility={visible} />
+        <Maps videoRef={ref}
+          currentJourney={currentJourney}
+          journeyVisibility={visible}
+          docMode={docMode}
+        />
       </div>
-      <div className={Style.controlPanel}>
-        <div className={Style.reactPlayerContainer}>
+      <div className={Style.controlPanel} style={{
+        width: docMode ? "50vw" : "33.3vw"
+      }}>
+        <div className={Style.reactPlayerContainer} style={{
+          width: docMode ? "45vw" : "30vw",
+          height: docMode ? "21vw" : "17vw"
+        }}>
           <ReactPlayer
             ref={ref}
-            url="https://www.youtube.com/watch?v=P-rt_hj6VAk"
+            url={currentJourney.videoURL}
             playing={true}
             width="100%"
             height="100%"
           />
         </div>
-        <div className={Style.ensembleInfo}>
-          <h3>Ensemble Info</h3>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-          do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-          irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-          cupidatat non proident, sunt in culpa qui officia deserunt
-          mollit anim id est laborum.
+        <div className={Style.scoreWrapper}>
+          <iframe src={"score/1.pdf#toolbar=0&navpanes=0"} style={{ width: "47vw", height: "30vw" }} />
         </div>
       </div>
       {/** Dropdown ensemble menu logic */}
@@ -63,12 +75,26 @@ const Main = () => {
                   size="big"
                   isChecked={visible[key]}
                   onChange={() => {
-                    let v = visible[key];
+                    if (docMode) {
+                      let nextArray = visible.slice();
 
-                    let nextArray = visible.slice();
-                    nextArray[key] = !v;
+                      for (var i = 0; i < visible.length; i++) {
+                        if (i !== key)
+                          nextArray[i] = false;
+                        else
+                          nextArray[i] = true;
+                      }
+                      setCurrentJourney(Journeys.metadata[key]);
+                      setVisible(nextArray);
+                      //setSelectedTown(Movements.metadata[currentJourney.sequence[0]])
+                    } else {
+                      let v = visible[key];
 
-                    setVisible(nextArray);
+                      let nextArray = visible.slice();
+                      nextArray[key] = !v;
+
+                      setVisible(nextArray);
+                    }
 
                   }}
                   color={journey.fillColor} />
