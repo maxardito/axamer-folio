@@ -1,6 +1,7 @@
 import React from "react"
 import {
-    Polygon
+    Polygon,
+    Polyline
 } from "@react-google-maps/api"
 import Movements from "../Movements.json";
 
@@ -13,10 +14,10 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor, visible, selected }) => {
-    const option = {
+const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown }) => {
+    const polygonOption = {
         strokeColor: strokeColor,
-        strokeOpacity: 0.8,
+        strokeOpacity: 0.3,
         strokeWeight: 2,
         fillColor: fillColor,
         fillOpacity: 0.35,
@@ -26,18 +27,35 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selected }) => {
         visible: visible,
         radius: 30000,
         zIndex: 1
-    }
-    // TODO: Current selected pin should be different colored line
+    };
+
+    const polylineOption = {
+        geodesic: true,
+        strokeColor: "blue",
+        visible: visible,
+        strokeOpacity: 1,
+        strokeWeight: 6,
+    };
     return (
-        <Polygon
-            paths={sequence.map((num, key) => {
-                return {
-                    lat: Movements.metadata[num].lat,
-                    lng: Movements.metadata[num].lng
+        <>
+            <Polygon
+                paths={sequence.map((num, key) => {
+                    return {
+                        lat: Movements.metadata[num].lat,
+                        lng: Movements.metadata[num].lng
+                    }
+                })}
+                options={polygonOption}
+            />
+            <Polyline
+                path={[
+                    { lat: selectedTown.lat, lng: selectedTown.lng },
+                    { lat: nextTown.lat, lng: nextTown.lng }]
                 }
-            })}
-            options={option}
-        />
+                options={polylineOption}
+
+            />
+        </>
     )
 }
 

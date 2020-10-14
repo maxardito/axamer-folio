@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
     GoogleMap,
     useLoadScript,
     Marker,
     InfoWindow,
 } from "@react-google-maps/api";
+
+import { SelectedTownContext } from "../../contexts/SelectedTown.js"
 
 import mapStyles from "./MapStyles.js";
 import Journey from "../Journey/Journey.js";
@@ -33,7 +35,7 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
 
     const DOCMODE_CENTER = {
         lat: 47.38037,
-        lng: 11.5516,
+        lng: 11.6516,
     };
 
     const MAP_BOUNDARIES = {
@@ -54,24 +56,36 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
         }
     };
 
-    const [selected, setSelected] = useState(null);
+
+    function getPinIcon(pin) {
+        if (docMode) {
+            if (selectedTown.id === pin.id) {
+                return '/pin.png'
+            } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
+                return '/nextPin.png'
+            } else {
+                return '/dot.png'
+            }
+        } else {
+            return '/pin.png'
+        }
+    }
+
+    const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
 
     useEffect(() => {
-        let gate = false;
         let counter = 0;
-        setSelected(Movements.metadata[currentJourney.sequence[counter]])
+        let currentJourney = Journeys.metadata[0]
+        setSelectedTown(Movements.metadata[currentJourney.sequence[counter]])
         const interval = setInterval(() => {
-            if (videoRef.current) {
-                if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
-                    if (gate === false) {
-                        setSelected(Movements.metadata[currentJourney.sequence[counter]])
-                        counter++;
-                    }
-                }
+            if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
+                setSelectedTown(Movements.metadata[currentJourney.sequence[counter]])
+                counter++;
             }
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, currentJourney]);
+    }, [videoRef, setSelectedTown]);
+
 
 
     if (loadError) return "Error loading maps";
@@ -93,41 +107,37 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
                         strokeColor={journey.strokeColor}
                         fillColor={docMode ? "gray" : journey.fillColor}
                         key={key}
-                        selected={selected}
+                        selectedTown={selectedTown}
+                        nextTown={Movements.metadata[currentJourney.sequence[selectedTown.id + 1]]}
                     />
                 })}
 
                 {/** Pins, text bubbles, markers */}
                 {Movements.metadata.map((pin) => (
-                    <Marker
-                        key={pin.id}
-                        position={{ lat: pin.lat, lng: pin.lng }}
-                        icon={{
-                            url: docMode ? (selected.id === pin.id ? '/pin.png' : '/dot.png') : '/pin.png',
-                            scaledSize: new window.google.maps.Size(30, 30),
-                            origin: new window.google.maps.Point(0, 0),
-                            anchor: new window.google.maps.Point(15, 15)
-                        }}
-                        onClick={() => {
-                            setSelected(pin)
-                            videoRef.current.seekTo(Math.floor(Math.random() * Math.floor(1161)))
-                        }}
-                    />
+                    <div className={Style.blinkingMarker}>
+                        <Marker
+                            key={pin.id}
+                            position={{ lat: pin.lat, lng: pin.lng }}
+                            icon={{
+                                url: getPinIcon(pin),
+                                scaledSize: new window.google.maps.Size(30, 30),
+                                origin: new window.google.maps.Point(0, 0),
+                                anchor: new window.google.maps.Point(15, 15),
+                            }}
+                            onClick={() => {
+                                //setSelectedTown(pin)
+                                //let index = currentJourney.sequence.findIndex(function (e) { return e === pin.id })
+                                //videoRef.current.seekTo(currentJourney.timeStamps[index])
+                            }}
+                        />
+                    </div>
                 ))}
 
                 {/** Pin bubble pop-up logic */}
-                {selected ? (
-                    <InfoWindow position={{ lat: selected.lat, lng: selected.lng }}>
-                        <div style={{ width: "20vw" }}>
-                            <h2>{selected.name}</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                            do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum
-                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                            cupidatat non proident, sunt in culpa qui officia deserunt
-                 mollit anim id est laborum. </p>
+                {selectedTown ? (
+                    <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
+                        <div style={{ width: "30vw" }}>
+                            <iframe src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />
                         </div>
                     </InfoWindow>
                 ) : null}

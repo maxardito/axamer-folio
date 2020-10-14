@@ -1,13 +1,14 @@
-import React, { useState, createRef } from "react";
+import React, { useState, useContext, createRef } from "react";
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
 
 import Checkbox from "react-checkbox-component"
+import { SelectedTownContext } from "../contexts/SelectedTown.js"
 //import Rendering from "./Rendering.js";
 
-//import Movements from "./Movements.json"
+import Movements from "./Movements.json"
 
 const Main = () => {
   const ref = createRef()
@@ -16,6 +17,8 @@ const Main = () => {
   const [dropDown, setDropDown] = useState(false);
   const [docMode, setDocMode] = useState(true);
   const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
+
+  //const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
 
   return (
     <>
@@ -48,7 +51,7 @@ const Main = () => {
       }}>
         <div className={Style.reactPlayerContainer} style={{
           width: docMode ? "45vw" : "30vw",
-          height: docMode ? "31vw" : "17vw"
+          height: docMode ? "21vw" : "17vw"
         }}>
           <ReactPlayer
             ref={ref}
@@ -58,16 +61,8 @@ const Main = () => {
             height="100%"
           />
         </div>
-        <div className={Style.ensembleInfo}>
-          <h3>Ensemble Info</h3>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-          do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-          irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-          cupidatat non proident, sunt in culpa qui officia deserunt
-          mollit anim id est laborum.
+        <div className={Style.scoreWrapper}>
+          <iframe src={"score/1.pdf#toolbar=0&navpanes=0"} style={{ width: "47vw", height: "30vw" }} />
         </div>
       </div>
       {/** Dropdown ensemble menu logic */}
@@ -91,6 +86,7 @@ const Main = () => {
                       }
                       setCurrentJourney(Journeys.metadata[key]);
                       setVisible(nextArray);
+                      //setSelectedTown(Movements.metadata[currentJourney.sequence[0]])
                     } else {
                       let v = visible[key];
 
