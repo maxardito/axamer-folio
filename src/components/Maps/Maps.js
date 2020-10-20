@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
     GoogleMap,
     useLoadScript,
@@ -13,6 +13,7 @@ import Journey from "../Journey/Journey.js";
 import Journeys from "../Journey/Journeys.json";
 import Movements from "../Movements.json";
 import Style from "./maps.module.scss";
+import { createJsxAttribute } from "typescript";
 
 const libraries = [null];
 
@@ -62,7 +63,7 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
             if (selectedTown.id === pin.id) {
                 return '/pin.png'
             } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
-                return '/nextPin.png'
+                return '/previousPin.png'
             } else {
                 return '/dot.png'
             }
@@ -72,19 +73,39 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
     }
 
     const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
+    const [nextTown, setNextTown] = useState(null)
+    const [previousTown, setPreviousTown] = useState(null)
 
     useEffect(() => {
-        let counter = 0;
-        let currentJourney = Journeys.metadata[0]
-        setSelectedTown(Movements.metadata[currentJourney.sequence[counter]])
+        let gate = false;
+        let currentIndex = 0;
+        let cj = currentJourney;
+
+        setSelectedTown(Movements.metadata[cj.sequence[currentIndex]]);
+        setNextTown(Movements.metadata[cj.sequence[currentIndex + 1]]);
+        setPreviousTown(Movements.metadata[cj.sequence[currentIndex - 1]]);
+
         const interval = setInterval(() => {
-            if (Math.trunc(videoRef.current.getCurrentTime()) === currentJourney.timeStamps[counter]) {
-                setSelectedTown(Movements.metadata[currentJourney.sequence[counter]])
-                counter++;
+            /**
+             * Pathway setting logic, setting current previous and next town
+             * based on video timestamps
+             */
+            let currentTime = Math.trunc(videoRef.current.getCurrentTime())
+            for (var i = 0; i < cj.sequence.length; i++) {
+                let currentTown = cj.timeStamps[i];
+                let nextTown = cj.timeStamps[i + 1] ? cj.timeStamps[i + 1] : null;
+                if (currentTime >= currentTown && currentTime < nextTown) {
+                    if (currentIndex !== i) {
+                        currentIndex = i;
+                        setSelectedTown(Movements.metadata[cj.sequence[i]])
+                        setNextTown(Movements.metadata[cj.sequence[i + 1]])
+                        setPreviousTown(Movements.metadata[cj.sequence[i - 1]]);
+                    }
+                }
             }
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, setSelectedTown]);
+    }, [videoRef, setSelectedTown, currentJourney]);
 
 
 
@@ -105,10 +126,12 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
                         visible={journeyVisibility[key]}
                         sequence={journey.sequence}
                         strokeColor={journey.strokeColor}
-                        fillColor={docMode ? "gray" : journey.fillColor}
+                        fillColor={docMode ? "2A2321" : journey.fillColor}
                         key={key}
                         selectedTown={selectedTown}
-                        nextTown={Movements.metadata[currentJourney.sequence[selectedTown.id + 1]]}
+                        nextTown={nextTown ? nextTown : selectedTown}
+                        previousTown={previousTown ? previousTown : selectedTown}
+
                     />
                 })}
 
@@ -136,8 +159,8 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
                 {/** Pin bubble pop-up logic */}
                 {selectedTown ? (
                     <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
-                        <div style={{ width: "30vw" }}>
-                            <iframe title={"header"} src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />
+                        <div style={{ width: "3vw" }}>
+                            {/** <iframe title={"header"} src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />*/}
                         </div>
                     </InfoWindow>
                 ) : null}

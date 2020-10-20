@@ -2,7 +2,7 @@
   position: absolute;
   font-size: 10vh;
   text-align: left;
-  padding-left: 2vw;
+  padding-left: 1vw;
   height: 12vh;
   color: white;
   width: 98vw;
@@ -13,10 +13,10 @@
 }
 
 .ensembleMenuHamburger{
-  float: right; 
-  width: 10vh;
-  padding-right: 1vw;
-  padding-top: 0.5vw;
+  float: left; 
+  width: 8vh;
+  padding-right: 2vw;
+  padding-top: 1vw;
   &:hover {
     cursor: pointer;
   }
@@ -25,22 +25,22 @@
 .controlPanel {
   position: relative;
   float:right;
-  height: 87vh;
-  top: 12vh;
+  height: 99.3vh;
+  top: 0vh;
   width: 33.3vw;
-  border: 0.5vw solid black;
-  color: white;
-  border-bottom: none;
-  opacity: 0.9;
+  color: black;
+  border-bottom: 0.3vw solid black;
+  border-left: 0.3vw solid black;
+  opacity: 1;
   z-index: 2;
-  overflow: scroll;
+  overflow: none;
   font-size: 1em;
-  background: black;
+  background: gray;
 }
 
 .ensembleMenuPanel {
     position: absolute;
-    right: 0;
+    left: 0;
     height: auto;
     top: 12vh;
     width: 33.3vw;
@@ -56,16 +56,15 @@
   position: relative;
   width: 30vw;
   height: 17vw;
-  top: 2vw;
-  left: 1.3vw;
+  top: 0.5vw;
+  left: 14.5vw;
   border: 0.3vw solid white;
-  margin-bottom: 4vw;
+  margin-bottom: 2vw;
 }
 
 .scoreWrapper {
   position: relative;
-  padding-top: 1vw;
-  padding-left: 1vw;
+  padding-left: 3vw;
   text-align: justify;
 }
 

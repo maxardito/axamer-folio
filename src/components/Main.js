@@ -26,11 +26,11 @@ const Main = () => {
       <div style={{ position: "relative" }}>
         <div className={Style.title}>
           AXAMER FOLIO
-          <Checkbox
+          {/** <Checkbox
             size="big"
             isChecked={docMode}
             onChange={() => { setDocMode(!docMode) }}
-            color={"black"} />
+            color={"black"} />*/}
           <img
             src={"/pin.png"}
             className={Style.ensembleMenuHamburger}
@@ -48,19 +48,24 @@ const Main = () => {
         width: docMode ? "50vw" : "33.3vw"
       }}>
         <div className={Style.reactPlayerContainer} style={{
-          width: docMode ? "45vw" : "30vw",
-          height: docMode ? "21vw" : "17vw"
+          width: docMode ? "32vw" : "30vw",
+          height: docMode ? "18vw" : "17vw"
         }}>
           <ReactPlayer
             ref={ref}
             url={currentJourney.videoURL}
             playing={true}
+            controls={true}
             width="100%"
             height="100%"
           />
         </div>
         <div className={Style.scoreWrapper}>
-          <iframe title={"score"} src={"score/1.pdf#toolbar=0&navpanes=0"} style={{ width: "47vw", height: "30vw" }} />
+          <iframe
+            title={"score"}
+            src={"score/1.pdf#toolbar=0&navpanes=0"}
+            style={{ width: "44vw", height: "33vw" }}
+          />
         </div>
       </div>
       {/** Dropdown ensemble menu logic */}

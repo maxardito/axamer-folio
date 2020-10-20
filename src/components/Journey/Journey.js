@@ -14,13 +14,13 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown }) => {
+const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown, previousTown }) => {
     const polygonOption = {
         strokeColor: strokeColor,
         strokeOpacity: 0.3,
         strokeWeight: 2,
         fillColor: fillColor,
-        fillOpacity: 0.35,
+        fillOpacity: 0.7,
         clickable: false,
         draggable: false,
         editable: false,
@@ -29,7 +29,15 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
         zIndex: 1
     };
 
-    const polylineOption = {
+    const nextTownPolyline = {
+        geodesic: true,
+        strokeColor: "red",
+        visible: visible,
+        strokeOpacity: 1,
+        strokeWeight: 6,
+    };
+
+    const previousTownPolyline = {
         geodesic: true,
         strokeColor: "blue",
         visible: visible,
@@ -52,7 +60,15 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
                     { lat: selectedTown.lat, lng: selectedTown.lng },
                     { lat: nextTown.lat, lng: nextTown.lng }]
                 }
-                options={polylineOption}
+                options={nextTownPolyline}
+
+            />
+            <Polyline
+                path={[
+                    { lat: selectedTown.lat, lng: selectedTown.lng },
+                    { lat: previousTown.lat, lng: previousTown.lng }]
+                }
+                options={previousTownPolyline}
 
             />
         </>
