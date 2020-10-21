@@ -18,8 +18,7 @@ const Main = () => {
   const [scoreID, setScoreID] = useState(Journeys.metadata[0].sequence[0]);
 
   function handleTownChange(selectedTown) {
-
-    setScoreID(selectedTown.id ? selectedTown.id : 0)
+    setScoreID(selectedTown ? selectedTown.id : 0)
   }
   return (
     <>
