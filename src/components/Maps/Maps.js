@@ -74,15 +74,13 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
     const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
     const [nextTown, setNextTown] = useState(null)
     const [previousTown, setPreviousTown] = useState(null)
+    const [currentIndex, setCurrentIndex] = useState(0)
 
     useEffect(() => {
-        let currentIndex = 0;
-        let cj = currentJourney;
-
-        setSelectedTown(Movements.metadata[cj.sequence[currentIndex]]);
-        setNextTown(Movements.metadata[cj.sequence[currentIndex + 1]]);
-        setPreviousTown(Movements.metadata[cj.sequence[currentIndex - 1]]);
-        //onTownChange(Movements.metadata[cj.sequence[currentIndex]])
+        setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
+        setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
+        setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
+        onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]]);
 
         const interval = setInterval(() => {
             /**
@@ -90,22 +88,22 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
              * based on video timestamps
              */
             let currentTime = Math.trunc(videoRef.current.getCurrentTime());
-            for (var i = 0; i < cj.sequence.length; i++) {
-                let currentTown = cj.timeStamps[i];
-                let nextTown = cj.timeStamps[i + 1] ? cj.timeStamps[i + 1] : cj.videoLength;
+            for (var i = 0; i < currentJourney.sequence.length; i++) {
+                let currentTown = currentJourney.timeStamps[i];
+                let nextTown = currentJourney.timeStamps[i + 1] ? currentJourney.timeStamps[i + 1] : currentJourney.videoLength;
                 if (currentTime >= currentTown && currentTime < nextTown) {
                     if (currentIndex !== i) {
-                        currentIndex = i;
-                        setSelectedTown(Movements.metadata[cj.sequence[i]])
-                        setNextTown(Movements.metadata[cj.sequence[i + 1]])
-                        setPreviousTown(Movements.metadata[cj.sequence[i - 1]]);
-                        //onTownChange(Movements.metadata[cj.sequence[i]])
+                        setCurrentIndex(i)
+                        setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
+                        setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
+                        setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
+                        onTownChange(Movements.metadata[currentJourney.sequence[i]])
                     }
                 }
             }
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, onTownChange, setSelectedTown, currentJourney]);
+    }, [videoRef, onTownChange, setSelectedTown, currentJourney, currentIndex]);
 
 
 
