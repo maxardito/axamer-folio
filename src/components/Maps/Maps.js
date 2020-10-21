@@ -59,7 +59,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
 
     function getPinIcon(pin) {
         if (docMode) {
-            if (selectedTown.id === pin.id) {
+            if ((selectedTown ? selectedTown.id : 0) === pin.id) {
                 return '/pin.png'
             } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
                 return '/previousPin.png'
@@ -75,12 +75,16 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
     const [nextTown, setNextTown] = useState(null)
     const [previousTown, setPreviousTown] = useState(null)
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [journeyRef, setJourneyRef] = useState(currentJourney)
 
     useEffect(() => {
-        setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
-        setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
-        setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
-        onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]]);
+
+        if (!isLoaded) {
+            setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
+            setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
+            setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
+            onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]]);
+        }
 
         const interval = setInterval(() => {
             /**
@@ -92,6 +96,8 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 let currentTown = currentJourney.timeStamps[i];
                 let nextTown = currentJourney.timeStamps[i + 1] ? currentJourney.timeStamps[i + 1] : currentJourney.videoLength;
                 if (currentTime >= currentTown && currentTime < nextTown) {
+
+                    // If timestamp changes
                     if (currentIndex !== i) {
                         setCurrentIndex(i)
                         setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
@@ -99,11 +105,20 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
                         onTownChange(Movements.metadata[currentJourney.sequence[i]])
                     }
+
+                    // If journey changes
+                    if (journeyRef !== currentJourney) {
+                        setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
+                        setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
+                        setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
+                        onTownChange(Movements.metadata[currentJourney.sequence[i]])
+                        setJourneyRef(currentJourney)
+                    }
                 }
             }
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, onTownChange, setSelectedTown, currentJourney, currentIndex]);
+    }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex]);
 
 
 
@@ -157,9 +172,11 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 {/** Pin bubble pop-up logic */}
                 {selectedTown ? (
                     <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
-                        <div style={{ width: "auto" }}>
-                            <h1>{selectedTown.name}</h1>
-                            {/** <iframe title={"header"} src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />*/}
+                        <div style={{ width: "20vw", height: "auto" }}>
+                            <img src={"popups/" + selectedTown.id + ".jpg"}
+                                style={{ width: "100%", height: "100%" }}
+                                alt={"Town Name"}
+                            />
                         </div>
                     </InfoWindow>
                 ) : null}
