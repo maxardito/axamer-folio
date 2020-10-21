@@ -13,11 +13,10 @@ import Journey from "../Journey/Journey.js";
 import Journeys from "../Journey/Journeys.json";
 import Movements from "../Movements.json";
 import Style from "./maps.module.scss";
-import { createJsxAttribute } from "typescript";
 
 const libraries = [null];
 
-const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
+const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journeyVisibility, docMode }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -77,35 +76,36 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
     const [previousTown, setPreviousTown] = useState(null)
 
     useEffect(() => {
-        let gate = false;
         let currentIndex = 0;
         let cj = currentJourney;
 
         setSelectedTown(Movements.metadata[cj.sequence[currentIndex]]);
         setNextTown(Movements.metadata[cj.sequence[currentIndex + 1]]);
         setPreviousTown(Movements.metadata[cj.sequence[currentIndex - 1]]);
+        //onTownChange(Movements.metadata[cj.sequence[currentIndex]])
 
         const interval = setInterval(() => {
             /**
              * Pathway setting logic, setting current previous and next town
              * based on video timestamps
              */
-            let currentTime = Math.trunc(videoRef.current.getCurrentTime())
+            let currentTime = Math.trunc(videoRef.current.getCurrentTime());
             for (var i = 0; i < cj.sequence.length; i++) {
                 let currentTown = cj.timeStamps[i];
-                let nextTown = cj.timeStamps[i + 1] ? cj.timeStamps[i + 1] : null;
+                let nextTown = cj.timeStamps[i + 1] ? cj.timeStamps[i + 1] : cj.videoLength;
                 if (currentTime >= currentTown && currentTime < nextTown) {
                     if (currentIndex !== i) {
                         currentIndex = i;
                         setSelectedTown(Movements.metadata[cj.sequence[i]])
                         setNextTown(Movements.metadata[cj.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[cj.sequence[i - 1]]);
+                        //onTownChange(Movements.metadata[cj.sequence[i]])
                     }
                 }
             }
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, setSelectedTown, currentJourney]);
+    }, [videoRef, onTownChange, setSelectedTown, currentJourney]);
 
 
 
@@ -159,7 +159,8 @@ const Maps = ({ videoRef, currentJourney, journeyVisibility, docMode }) => {
                 {/** Pin bubble pop-up logic */}
                 {selectedTown ? (
                     <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
-                        <div style={{ width: "3vw" }}>
+                        <div style={{ width: "auto" }}>
+                            <h1>{selectedTown.name}</h1>
                             {/** <iframe title={"header"} src={"popups/11.pdf#toolbar=0&navpanes=0&zoom=50"} style={{ width: "100%" }} />*/}
                         </div>
                     </InfoWindow>
