@@ -3,21 +3,23 @@ import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
-
 import Checkbox from "react-checkbox-component"
 //import Rendering from "./Rendering.js";
 
 
 const Main = () => {
-  const ref = createRef()
+  const videoRef = createRef()
 
   const [visible, setVisible] = useState([true, false, false])
   const [dropDown, setDropDown] = useState(false);
   const [docMode, setDocMode] = useState(true);
   const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
 
-  //const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
+  const [scoreID, setScoreID] = useState(Journeys.metadata[0].sequence[0]);
 
+  function handleTownChange(selectedTown) {
+    setScoreID(selectedTown.id)
+  }
   return (
     <>
       {/*<div className={Style.rendering}>
@@ -26,7 +28,7 @@ const Main = () => {
       <div style={{ position: "relative" }}>
         <div className={Style.title}>
           AXAMER FOLIO
-          <Checkbox
+           <Checkbox
             size="big"
             isChecked={docMode}
             onChange={() => { setDocMode(!docMode) }}
@@ -38,8 +40,9 @@ const Main = () => {
             onClick={() => { setDropDown(!dropDown) }}
           />
         </div>
-        <Maps videoRef={ref}
+        <Maps videoRef={videoRef}
           currentJourney={currentJourney}
+          onTownChange={handleTownChange}
           journeyVisibility={visible}
           docMode={docMode}
         />
@@ -48,19 +51,24 @@ const Main = () => {
         width: docMode ? "50vw" : "33.3vw"
       }}>
         <div className={Style.reactPlayerContainer} style={{
-          width: docMode ? "45vw" : "30vw",
-          height: docMode ? "21vw" : "17vw"
+          width: docMode ? "32vw" : "30vw",
+          height: docMode ? "18vw" : "17vw"
         }}>
           <ReactPlayer
-            ref={ref}
+            ref={videoRef}
             url={currentJourney.videoURL}
             playing={true}
+            controls={true}
             width="100%"
             height="100%"
           />
         </div>
         <div className={Style.scoreWrapper}>
-          <iframe title={"score"} src={"score/1.pdf#toolbar=0&navpanes=0"} style={{ width: "47vw", height: "30vw" }} />
+          <iframe
+            title={"score"}
+            src={"score/" + scoreID + ".pdf#toolbar=0&navpanes=0"}
+            style={{ width: "44vw", height: "60vh" }}
+          />
         </div>
       </div>
       {/** Dropdown ensemble menu logic */}
@@ -84,7 +92,6 @@ const Main = () => {
                       }
                       setCurrentJourney(Journeys.metadata[key]);
                       setVisible(nextArray);
-                      //setSelectedTown(Movements.metadata[currentJourney.sequence[0]])
                     } else {
                       let v = visible[key];
 
