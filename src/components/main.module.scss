@@ -1,11 +1,11 @@
 .title {
   position: absolute;
-  font-size: 5vw;
+  font-size: 10vh;
   text-align: left;
-  padding-left: 1vw;
-  height: 5vw;
+  padding-left: 2vw;
+  height: 12vh;
   color: white;
-  width: 58vw;
+  width: 98vw;
   z-index: 1;
 
   // Gradients
@@ -13,58 +13,94 @@
 }
 
 .ensembleMenuHamburger{
-  float: left; 
-  width: 8vh;
-  padding-right: 2vw;
-  padding-top: 1vw;
+  float: right; 
+  width: 10vh;
+  padding-right: 1vw;
+  padding-top: 0.5vw;
   &:hover {
     cursor: pointer;
   }
 }
 
-.controlPanel {
+.controlPanelBg {
   position: relative;
   float:right;
-  height: 99.3vh;
-  top: 0vh;
+  height: 87vh;
+  top: 12vh;
   width: 33.3vw;
-  color: black;
-  border-bottom: 0.3vw solid black;
-  border-left: 0.3vw solid black;
+  border: 0.05vw solid white;
+  color: white;
+  border-bottom: none;
+  opacity: 0.9;
+  z-index: 1;
+  overflow: scroll;
+  font-size: 1em;
+  background: black;
+}
+
+
+.controlPanel {
+  position: absolute;
+  float: right;
+  height: 87vh;
+  top: 10.2vh;
+  width: 33.3vw;
+  left: 50%;
+  color: white;
+  border-bottom: none;
   opacity: 1;
-  z-index: 2;
-  overflow: none;
+  z-index: 3;
+  overflow: scroll;
+  font-size: 1em;
+}
+
+.tab{
+  position: absolute;
+  float: left;
+  top: 1.05vw;
+  width: 50%;
+  padding: 1%;
+  left: 0vw; 
+  list-style-type: none;
+}
+
+.ensembleMenuPanel {
+  position: absolute;
+  right: 0;
+  height: auto;
+  top: 12vh;
+  width: 33.3vw;
+  border: 0.5vw solid black;
+  color: white;
+  z-index: 3;
+  overflow: scroll;
   font-size: 1em;
   background: gray;
 }
 
-.ensembleMenuPanel {
-    position: absolute;
-    left: 0;
-    height: auto;
-    top: 12vh;
-    width: 33.3vw;
-    border: 0.5vw solid black;
-    color: white;
-    z-index: 3;
-    overflow: scroll;
-    font-size: 1em;
-    background: gray;
-}
-
 .reactPlayerContainer {
   position: relative;
-  width: 30vw;
-  height: 17vw;
-  top: 0.5vw;
-  left: 14.5vw;
-  border: 0.3vw solid white;
+  width: 50vw;
+  height: 37vw;
+  top: 7vw;
+  left: 2vw;
+  border: 0.1vw solid white;
   margin-bottom: 2vw;
+}
+
+.reactPlayerOpacityOverride {
+  position: absolute;
+  width: 46vw;
+  height: 26vw;
+  top: 14vw;
+  left: 52vw;
+  background-color: black;
 }
 
 .scoreWrapper {
   position: relative;
   padding-left: 3vw;
+  top: -22vw;
   text-align: justify;
 }
 

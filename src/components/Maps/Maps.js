@@ -91,7 +91,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
              * Pathway setting logic, setting current previous and next town
              * based on video timestamps
              */
-            let currentTime = Math.trunc(videoRef.current.getCurrentTime());
+            let currentTime = Math.trunc(videoRef.current ? videoRef.current.getCurrentTime() : 0);
             for (var i = 0; i < currentJourney.sequence.length; i++) {
                 let currentTown = currentJourney.timeStamps[i];
                 let nextTown = currentJourney.timeStamps[i + 1] ? currentJourney.timeStamps[i + 1] : currentJourney.videoLength;
