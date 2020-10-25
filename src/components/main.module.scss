@@ -45,13 +45,23 @@
   height: 87vh;
   top: 10.2vh;
   width: 33.3vw;
-  left: 47%;
+  left: 50%;
   color: white;
   border-bottom: none;
   opacity: 1;
   z-index: 3;
   overflow: scroll;
   font-size: 1em;
+}
+
+.tab{
+  position: absolute;
+  float: left;
+  top: 1.05vw;
+  width: 50%;
+  padding: 1%;
+  left: 0vw; 
+  list-style-type: none;
 }
 
 .ensembleMenuPanel {
@@ -72,7 +82,7 @@
   position: relative;
   width: 50vw;
   height: 37vw;
-  top: 4vw;
+  top: 7vw;
   left: 2vw;
   border: 0.1vw solid white;
   margin-bottom: 2vw;
@@ -82,7 +92,7 @@
   position: absolute;
   width: 46vw;
   height: 26vw;
-  top: 12vw;
+  top: 14vw;
   left: 52vw;
   background-color: black;
 }
@@ -90,6 +100,7 @@
 .scoreWrapper {
   position: relative;
   padding-left: 3vw;
+  top: -22vw;
   text-align: justify;
 }
 

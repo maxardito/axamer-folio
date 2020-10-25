@@ -19,6 +19,7 @@ const Main = () => {
 
   const [scoreID, setScoreID] = useState(Journeys.metadata[0].sequence[0]);
   const [tabIndex, setTabIndex] = useState(0);
+  const [tabColor, setTabColor] = useState(['black', 'gray']);
   const [videoVisibility, setVideoVisibility] = useState('visible')
 
   function handleTownChange(selectedTown) {
@@ -28,7 +29,9 @@ const Main = () => {
   function handleTabChange(index) {
     setTabIndex(index)
     setVideoVisibility(index === 0 ? 'visible' : 'hidden')
+    setTabColor(index === 0 ? ['black', 'gray'] : ['gray', 'black'])
   }
+
   return (
     <>
       {/*<div className={Style.rendering}>
@@ -67,8 +70,8 @@ const Main = () => {
       }}>
         <Tabs selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
           <TabList>
-            <Tab style={{ float: 'left', width: '45%', padding: '1%', backgroundColor: 'blue', listStyleType: 'none' }}>VIDEO</Tab>
-            <Tab style={{ float: 'right', width: '45%', padding: '1%', backgroundColor: 'red', listStyleType: 'none' }}>SCORE</Tab>
+            <Tab className={Style.tab} style={{ float: 'left', left: '0vw', backgroundColor: tabColor[0] }}>VIDEO</Tab>
+            <Tab className={Style.tab} style={{ float: 'right', left: '50%', backgroundColor: tabColor[1] }}>SCORE</Tab>
           </TabList>
 
           <TabPanel forceRender={true}>
