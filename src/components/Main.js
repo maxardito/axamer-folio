@@ -125,6 +125,7 @@ const Main = () => {
                         }
                         setCurrentJourney(Journeys.metadata[key]);
                         setVisible(nextArray);
+                        setDropDown(false)
                       } else {
                         let v = visible[key];
 
