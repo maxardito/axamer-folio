@@ -33,7 +33,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         lng: 11.3516,
     };
 
-    const DOCMODE_CENTER = {
+    let DOCMODE_CENTER = {
         lat: 47.38037,
         lng: 11.6516,
     };
@@ -56,13 +56,14 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         }
     };
 
+    const [pinPng, setPinPng] = useState('/pin.png')
 
     function getPinIcon(pin) {
         if (docMode) {
             if ((selectedTown ? selectedTown.id : 0) === pin.id) {
-                return '/pin.png'
+                return pinPng;
             } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
-                return '/previousPin.png'
+                return '/nextPin.png'
             } else {
                 return '/dot.png'
             }
@@ -85,6 +86,9 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
             setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
             onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]]);
         }
+
+        let pinGate = false;
+
 
         const interval = setInterval(() => {
             /**
@@ -116,6 +120,14 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                     }
                 }
             }
+
+
+            /**
+             *  telnet towel blinkenpin.nl
+             * */
+            setPinPng(pinGate ? '/pin.png' : '/dot.png')
+            pinGate = !pinGate;
+
         }, 500);
         return () => clearInterval(interval);
     }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex]);
@@ -172,11 +184,8 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 {/** Pin bubble pop-up logic */}
                 {selectedTown ? (
                     <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
-                        <div style={{ width: "20vw", height: "auto" }}>
-                            <img src={"popups/" + selectedTown.id + ".jpg"}
-                                style={{ width: "100%", height: "100%" }}
-                                alt={"Town Name"}
-                            />
+                        <div>
+                            <b>{selectedTown.name}</b>
                         </div>
                     </InfoWindow>
                 ) : null}

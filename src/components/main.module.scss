@@ -62,6 +62,9 @@
   padding: 1%;
   left: 0vw; 
   list-style-type: none;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .ensembleMenuPanel {
