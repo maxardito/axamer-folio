@@ -18,10 +18,10 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
 
     const polygonOption = {
         strokeColor: strokeColor,
-        strokeOpacity: 0.3,
+        strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: fillColor,
-        fillOpacity: 0.7,
+        fillOpacity: 0,
         clickable: false,
         draggable: false,
         editable: false,
