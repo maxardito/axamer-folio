@@ -81,6 +81,16 @@
   background: gray;
 }
 
+.pinTitle{
+  position: absolute;
+  background-color: white;
+  top: 8vw;
+  width: 20vw;
+  height: auto;
+  left: 28vw;
+  border: 0.3vw solid black;
+}
+
 .reactPlayerContainer {
   position: relative;
   width: 50vw;

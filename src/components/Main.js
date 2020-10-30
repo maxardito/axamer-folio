@@ -101,6 +101,13 @@ const Main = () => {
           </TabPanel>
         </Tabs>
       </div>
+      <div className={Style.pinTitle}>
+        <img
+          alt={"Title"}
+          src={"popups/" + scoreID + ".jpg"}
+          style={{ width: '100%', height: '100%' }}
+        />
+      </div>
 
 
       {/** Dropdown ensemble menu logic */}

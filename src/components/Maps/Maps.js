@@ -28,16 +28,6 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         height: "86.5vh",
     };
 
-    const CENTER = {
-        lat: 47.38037,
-        lng: 11.3516,
-    };
-
-    let DOCMODE_CENTER = {
-        lat: 47.38037,
-        lng: 11.6516,
-    };
-
     const MAP_BOUNDARIES = {
         north: 47.3827,
         south: 47.000580,
@@ -56,7 +46,13 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         }
     };
 
+    const DEFAULT_CENTER = {
+        lat: 47.38037,
+        lng: 11.6516,
+    }
+
     const [pinPng, setPinPng] = useState('/pin.png')
+    const [center, setCenter] = useState(DEFAULT_CENTER);
 
     function getPinIcon(pin) {
         if (docMode) {
@@ -80,15 +76,14 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
 
     useEffect(() => {
 
+        let pinGate = false;
+
         if (!isLoaded) {
             setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
             setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
             setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
             onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]]);
         }
-
-        let pinGate = false;
-
 
         const interval = setInterval(() => {
             /**
@@ -108,6 +103,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
                         onTownChange(Movements.metadata[currentJourney.sequence[i]])
+                        setCenter(DEFAULT_CENTER)
                     }
 
                     // If journey changes
@@ -117,10 +113,10 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
                         onTownChange(Movements.metadata[currentJourney.sequence[i]])
                         setJourneyRef(currentJourney)
+                        setCenter(DEFAULT_CENTER)
                     }
                 }
             }
-
 
             /**
              *  telnet towel blinkenpin.nl
@@ -130,9 +126,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
 
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex]);
-
-
+    }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex, DEFAULT_CENTER]);
 
     if (loadError) return "Error loading maps";
     if (!isLoaded) return "Loading maps";
@@ -143,7 +137,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 mapContainerStyle={mapContainerStyle}
                 zoom={11}
                 options={options}
-                center={docMode ? DOCMODE_CENTER : CENTER}
+                center={center}
             >
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
@@ -156,7 +150,6 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         selectedTown={selectedTown}
                         nextTown={nextTown ? nextTown : selectedTown}
                         previousTown={previousTown ? previousTown : selectedTown}
-
                     />
                 })}
 

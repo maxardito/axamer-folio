@@ -14,7 +14,8 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown, previousTown }) => {
+const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown, previousTown, isConvolved }) => {
+
     const polygonOption = {
         strokeColor: strokeColor,
         strokeOpacity: 0.3,
@@ -44,6 +45,15 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
         strokeOpacity: 1,
         strokeWeight: 6,
     };
+
+    const convolvedTownPolyline = {
+        geodesic: true,
+        strokeColor: "green",
+        visible: visible,
+        strokeOpacity: 1,
+        strokeWeight: 6,
+    };
+
     return (
         <>
             <Polygon
@@ -68,7 +78,7 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
                     { lat: selectedTown.lat, lng: selectedTown.lng },
                     { lat: previousTown.lat, lng: previousTown.lng }]
                 }
-                options={previousTownPolyline}
+                options={isConvolved ? convolvedTownPolyline : previousTownPolyline}
 
             />
         </>
