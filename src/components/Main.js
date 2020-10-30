@@ -92,14 +92,21 @@ const Main = () => {
           </TabPanel>
           <TabPanel>
             <div className={Style.scoreWrapper}>
-              <iframe
-                title={"score"}
-                src={"score/" + scoreID + ".pdf#toolbar=0&navpanes=0"}
+              <img
+                alt={"Score"}
+                src={"score/" + scoreID + ".jpg"}
                 style={{ width: "44vw", height: "60vh" }}
               />
             </div>
           </TabPanel>
         </Tabs>
+      </div>
+      <div className={Style.pinTitle}>
+        <img
+          alt={"Title"}
+          src={"popups/" + scoreID + ".jpg"}
+          style={{ width: '100%', height: '100%' }}
+        />
       </div>
 
 

@@ -28,16 +28,6 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         height: "86.5vh",
     };
 
-    const CENTER = {
-        lat: 47.38037,
-        lng: 11.3516,
-    };
-
-    const DOCMODE_CENTER = {
-        lat: 47.38037,
-        lng: 11.6516,
-    };
-
     const MAP_BOUNDARIES = {
         north: 47.3827,
         south: 47.000580,
@@ -56,13 +46,20 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         }
     };
 
+    const DEFAULT_CENTER = {
+        lat: 47.38037,
+        lng: 11.6516,
+    }
+
+    const [pinPng, setPinPng] = useState('/pin.png')
+    const [center, setCenter] = useState(DEFAULT_CENTER);
 
     function getPinIcon(pin) {
         if (docMode) {
             if ((selectedTown ? selectedTown.id : 0) === pin.id) {
-                return '/pin.png'
+                return pinPng;
             } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
-                return '/previousPin.png'
+                return '/nextPin.png'
             } else {
                 return '/dot.png'
             }
@@ -78,6 +75,8 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
     const [journeyRef, setJourneyRef] = useState(currentJourney)
 
     useEffect(() => {
+
+        let pinGate = false;
 
         if (!isLoaded) {
             setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
@@ -104,6 +103,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
                         onTownChange(Movements.metadata[currentJourney.sequence[i]])
+                        setCenter(DEFAULT_CENTER)
                     }
 
                     // If journey changes
@@ -113,14 +113,20 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
                         onTownChange(Movements.metadata[currentJourney.sequence[i]])
                         setJourneyRef(currentJourney)
+                        setCenter(DEFAULT_CENTER)
                     }
                 }
             }
+
+            /**
+             *  telnet towel blinkenpin.nl
+             * */
+            setPinPng(pinGate ? '/pin.png' : '/dot.png')
+            pinGate = !pinGate;
+
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex]);
-
-
+    }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex, DEFAULT_CENTER]);
 
     if (loadError) return "Error loading maps";
     if (!isLoaded) return "Loading maps";
@@ -131,7 +137,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 mapContainerStyle={mapContainerStyle}
                 zoom={11}
                 options={options}
-                center={docMode ? DOCMODE_CENTER : CENTER}
+                center={center}
             >
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
@@ -144,7 +150,6 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         selectedTown={selectedTown}
                         nextTown={nextTown ? nextTown : selectedTown}
                         previousTown={previousTown ? previousTown : selectedTown}
-
                     />
                 })}
 
@@ -172,11 +177,8 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 {/** Pin bubble pop-up logic */}
                 {selectedTown ? (
                     <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
-                        <div style={{ width: "20vw", height: "auto" }}>
-                            <img src={"popups/" + selectedTown.id + ".jpg"}
-                                style={{ width: "100%", height: "100%" }}
-                                alt={"Town Name"}
-                            />
+                        <div>
+                            <b>{selectedTown.name}</b>
                         </div>
                     </InfoWindow>
                 ) : null}
