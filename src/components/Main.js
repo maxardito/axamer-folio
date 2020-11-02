@@ -22,6 +22,8 @@ const Main = () => {
   const [tabColor, setTabColor] = useState(['black', 'gray']);
   const [videoVisibility, setVideoVisibility] = useState('visible')
 
+  const [polygonOpacity, setPolygonOpacity] = useState(0.7)
+
   function handleTownChange(selectedTown) {
     setScoreID(selectedTown ? selectedTown.id : 0)
   }
@@ -57,6 +59,7 @@ const Main = () => {
           onTownChange={handleTownChange}
           journeyVisibility={visible}
           docMode={docMode}
+          polygonOpacity={polygonOpacity}
         />
       </div>
       <div className={Style.reactPlayerOpacityOverride}
@@ -83,10 +86,12 @@ const Main = () => {
               <ReactPlayer
                 ref={videoRef}
                 url={currentJourney.videoURL}
-                playing={true}
+                playing={false}
                 controls={true}
                 width="100%"
                 height="100%"
+                onPlay={() => { setPolygonOpacity(0) }}
+                onPause={() => { setPolygonOpacity(0.7) }}
               />
             </div>
           </TabPanel>
@@ -101,13 +106,13 @@ const Main = () => {
           </TabPanel>
         </Tabs>
       </div>
-      <div className={Style.pinTitle}>
+      {/*<div className={Style.pinTitle}>
         <img
           alt={"Title"}
           src={"popups/" + scoreID + ".jpg"}
           style={{ width: '100%', height: '100%' }}
         />
-      </div>
+      </div>*/}
 
 
       {/** Dropdown ensemble menu logic */}

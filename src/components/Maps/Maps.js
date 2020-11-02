@@ -16,7 +16,7 @@ import Style from "./maps.module.scss";
 
 const libraries = [null];
 
-const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journeyVisibility, docMode }) => {
+const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journeyVisibility, docMode, polygonOpacity }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -51,6 +51,10 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         lng: 11.6516,
     }
 
+    const infoOptions = {
+        backgroundColor: 1
+    };
+
     const [pinPng, setPinPng] = useState('/pin.png')
     const [center, setCenter] = useState(DEFAULT_CENTER);
 
@@ -73,6 +77,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
     const [previousTown, setPreviousTown] = useState(null)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [journeyRef, setJourneyRef] = useState(currentJourney)
+    const [infoWindow, setInfoWindow] = useState(0)
 
     useEffect(() => {
 
@@ -150,6 +155,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         selectedTown={selectedTown}
                         nextTown={nextTown ? nextTown : selectedTown}
                         previousTown={previousTown ? previousTown : selectedTown}
+                        polygonOpacity={polygonOpacity}
                     />
                 })}
 
@@ -165,23 +171,36 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                                 origin: new window.google.maps.Point(0, 0),
                                 anchor: new window.google.maps.Point(15, 15),
                             }}
-                            onClick={() => {
-                                //setSelectedTown(pin)
-                                //let index = currentJourney.sequence.findIndex(function (e) { return e === pin.id })
-                                //videoRef.current.seekTo(currentJourney.timeStamps[index])
+                            onMouseOver={() => {
+                                setInfoWindow(pin.id)
+                            }}
+                            onMouseOut={() => {
+                                setTimeout(() => { setInfoWindow(null) }, 100);
                             }}
                         />
                     </div>
                 ))}
 
                 {/** Pin bubble pop-up logic */}
-                {selectedTown ? (
-                    <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}>
-                        <div>
-                            <b>{selectedTown.name}</b>
-                        </div>
-                    </InfoWindow>
-                ) : null}
+                {selectedTown ?
+                    (
+                        <>
+                            <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}
+                                options={infoOptions}
+                            >
+                                <div>
+                                    <b>{selectedTown.name}</b>
+                                </div>
+                            </InfoWindow>
+                            {(infoWindow ? <InfoWindow position={{ lat: Movements.metadata[infoWindow].lat, lng: Movements.metadata[infoWindow].lng }}
+                                options={infoOptions}
+                            >
+                                <div>
+                                    <i>{Movements.metadata[infoWindow].name}</i>
+                                </div>
+                            </InfoWindow> : null)}
+                        </>
+                    ) : null}
             </GoogleMap>
         </div>
     )

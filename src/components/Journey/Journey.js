@@ -14,20 +14,20 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown, previousTown, isConvolved }) => {
+const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown, previousTown, isConvolved, polygonOpacity }) => {
 
     const polygonOption = {
         strokeColor: strokeColor,
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: fillColor,
-        fillOpacity: 0,
+        fillOpacity: polygonOpacity,
         clickable: false,
         draggable: false,
         editable: false,
         visible: visible,
         radius: 30000,
-        zIndex: 1
+        zIndex: 0
     };
 
     const nextTownPolyline = {
