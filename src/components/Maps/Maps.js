@@ -87,7 +87,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
             setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
             setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
             setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
-            onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]]);
+            onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]], Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
         }
 
         const interval = setInterval(() => {
@@ -107,7 +107,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
                         setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
-                        onTownChange(Movements.metadata[currentJourney.sequence[i]])
+                        onTownChange(Movements.metadata[currentJourney.sequence[i]], Movements.metadata[currentJourney.sequence[i + 1]])
                         setCenter(DEFAULT_CENTER)
                     }
 
@@ -116,7 +116,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
                         setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
-                        onTownChange(Movements.metadata[currentJourney.sequence[i]])
+                        onTownChange(Movements.metadata[currentJourney.sequence[i]], Movements.metadata[currentJourney.sequence[i + 1]])
                         setJourneyRef(currentJourney)
                         setCenter(DEFAULT_CENTER)
                     }

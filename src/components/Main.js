@@ -1,11 +1,12 @@
 import React, { useState, createRef } from "react";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
 import Checkbox from "react-checkbox-component"
+
+import Movements from "./Movements.json"
 //import Rendering from "./Rendering.js";
 
 
@@ -17,22 +18,17 @@ const Main = () => {
   const [docMode, setDocMode] = useState(true);
   const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
 
-  const [scoreID, setScoreID] = useState(Journeys.metadata[0].sequence[0]);
-  const [tabIndex, setTabIndex] = useState(0);
-  const [tabColor, setTabColor] = useState(['black', 'gray']);
   const [videoVisibility, setVideoVisibility] = useState('visible')
 
   const [polygonOpacity, setPolygonOpacity] = useState(0.7)
+  const [currentMovement, setCurrentMovement] = useState(null)
+  const [nextMovement, setNextMovement] = useState(null)
 
-  function handleTownChange(selectedTown) {
-    setScoreID(selectedTown ? selectedTown.id : 0)
+  function handleTownChange(selectedTown, nextTown) {
+    setCurrentMovement(selectedTown.name)
+    setNextMovement(nextTown.name);
   }
 
-  function handleTabChange(index) {
-    setTabIndex(index)
-    setVideoVisibility(index === 0 ? 'visible' : 'hidden')
-    setTabColor(index === 0 ? ['black', 'gray'] : ['gray', 'black'])
-  }
 
   return (
     <>
@@ -42,11 +38,6 @@ const Main = () => {
       <div style={{ position: "relative" }}>
         <div className={Style.title}>
           AXAMER FOLIO
-           <Checkbox
-            size="big"
-            isChecked={docMode}
-            onChange={() => { setDocMode(!docMode) }}
-            color={"black"} />
           <img
             src={"/pin.png"}
             className={Style.ensembleMenuHamburger}
@@ -71,41 +62,31 @@ const Main = () => {
       <div className={Style.controlPanel} style={{
         width: docMode ? "50vw" : "33.3vw"
       }}>
-        <Tabs selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
-          <TabList>
-            <Tab className={Style.tab} style={{ float: 'left', left: '0vw', backgroundColor: tabColor[0] }}>VIDEO</Tab>
-            <Tab className={Style.tab} style={{ float: 'right', left: '50%', backgroundColor: tabColor[1] }}>SCORE</Tab>
-          </TabList>
-
-          <TabPanel forceRender={true}>
-            <div className={Style.reactPlayerContainer} style={{
-              width: docMode ? "46vw" : "30vw",
-              height: docMode ? "25.85vw" : "17vw",
-              visibility: videoVisibility
-            }}>
-              <ReactPlayer
-                ref={videoRef}
-                url={currentJourney.videoURL}
-                playing={false}
-                controls={true}
-                width="100%"
-                height="100%"
-                onPlay={() => { setPolygonOpacity(0) }}
-                onPause={() => { setPolygonOpacity(0.7) }}
-              />
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <div className={Style.scoreWrapper}>
-              <img
-                alt={"Score"}
-                src={"score/" + scoreID + ".jpg"}
-                style={{ width: "44vw", height: "60vh" }}
-              />
-            </div>
-          </TabPanel>
-        </Tabs>
+        <div className={Style.reactPlayerContainer} style={{
+          width: docMode ? "46vw" : "30vw",
+          height: docMode ? "25.85vw" : "17vw",
+          visibility: videoVisibility
+        }}>
+          <ReactPlayer
+            ref={videoRef}
+            url={currentJourney.videoURL}
+            playing={false}
+            controls={true}
+            width="100%"
+            height="100%"
+            onPlay={() => { setPolygonOpacity(0) }}
+            onPause={() => { setPolygonOpacity(0.7) }}
+          />
+          <br />
+          Ensemble:<br />
+          Venue:<br />
+          Date:<br /><br />
+          <hr /><br />
+          <b><img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} /> Current Movement:</b> <i>{currentMovement}</i><br />
+          <b><img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} /> Next Movement:</b>  <i>{nextMovement}</i>
+        </div>
       </div>
+
       {/*<div className={Style.pinTitle}>
         <img
           alt={"Title"}
