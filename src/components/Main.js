@@ -13,10 +13,10 @@ const Main = () => {
 
   const [visible, setVisible] = useState([true, false, false])
   const [dropDown, setDropDown] = useState(false);
-  const [docMode, setDocMode] = useState(true);
+  const [docMode] = useState(true);
   const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
 
-  const [videoVisibility, setVideoVisibility] = useState('visible')
+  const [videoVisibility] = useState('visible')
 
   const [polygonOpacity, setPolygonOpacity] = useState(0.7)
   const [currentMovement, setCurrentMovement] = useState(null)
