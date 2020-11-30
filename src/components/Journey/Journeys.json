@@ -37,7 +37,7 @@
                 775,
                 915
             ],
-            "strokeColor": "yellow",
+            "strokeColor": "orange",
             "fillColor": "yellow"
         },
         {
@@ -72,7 +72,7 @@
                 593,
                 720
             ],
-            "strokeColor": "orange",
+            "strokeColor": "#B4005D",
             "fillColor": "blue"
         },
         {
@@ -102,7 +102,7 @@
                 293,
                 618
             ],
-            "strokeColor": "purple",
+            "strokeColor": "#B4005D",
             "fillColor": "red"
         }
     ]

@@ -48,7 +48,7 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
 
     const convolvedTownPolyline = {
         geodesic: true,
-        strokeColor: "green",
+        strokeColor: "purple",
         visible: visible,
         strokeOpacity: 1,
         strokeWeight: 6,

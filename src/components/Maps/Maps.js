@@ -62,8 +62,10 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         if (docMode) {
             if ((selectedTown ? selectedTown.id : 0) === pin.id) {
                 return pinPng;
-            } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
-                return '/nextPin.png'
+                /* } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
+                     return '/nextPin.png'
+                 } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id - 1) {
+                     return '/previousPin.png'*/
             } else {
                 return '/dot.png'
             }
@@ -87,7 +89,9 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
             setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
             setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
             setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
-            onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]], Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
+            onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]],
+                Movements.metadata[currentJourney.sequence[currentIndex + 1]],
+                Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
         }
 
         const interval = setInterval(() => {
@@ -107,7 +111,9 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
                         setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
-                        onTownChange(Movements.metadata[currentJourney.sequence[i]], Movements.metadata[currentJourney.sequence[i + 1]])
+                        onTownChange(Movements.metadata[currentJourney.sequence[i]],
+                            Movements.metadata[currentJourney.sequence[i + 1]],
+                            Movements.metadata[currentJourney.sequence[currentIndex - 1]])
                         setCenter(DEFAULT_CENTER)
                     }
 
@@ -116,7 +122,9 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                         setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
                         setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
                         setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
-                        onTownChange(Movements.metadata[currentJourney.sequence[i]], Movements.metadata[currentJourney.sequence[i + 1]])
+                        onTownChange(Movements.metadata[currentJourney.sequence[i]],
+                            Movements.metadata[currentJourney.sequence[i + 1]],
+                            Movements.metadata[currentJourney.sequence[currentIndex - 1]])
                         setJourneyRef(currentJourney)
                         setCenter(DEFAULT_CENTER)
                     }
@@ -175,7 +183,10 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                                 setInfoWindow(pin.id)
                             }}
                             onMouseOut={() => {
-                                setTimeout(() => { setInfoWindow(null) }, 100);
+                                setInfoWindow(null)
+                            }}
+                            onClick={() => {
+                                videoRef.current.seekTo(currentJourney.timeStamps[currentJourney.sequence.findIndex(function (e) { return e === pin.id })])
                             }}
                         />
                     </div>

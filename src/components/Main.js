@@ -5,8 +5,6 @@ import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
 import Checkbox from "react-checkbox-component"
-
-import Movements from "./Movements.json"
 //import Rendering from "./Rendering.js";
 
 
@@ -23,10 +21,12 @@ const Main = () => {
   const [polygonOpacity, setPolygonOpacity] = useState(0.7)
   const [currentMovement, setCurrentMovement] = useState(null)
   const [nextMovement, setNextMovement] = useState(null)
+  const [previousMovement, setPreviousMovement] = useState(null)
 
-  function handleTownChange(selectedTown, nextTown) {
-    setCurrentMovement(selectedTown.name)
-    setNextMovement(nextTown.name);
+  function handleTownChange(selectedTown, nextTown, previousTown) {
+    setCurrentMovement(selectedTown === undefined ? null : selectedTown.name)
+    setNextMovement(nextTown === undefined ? null : nextTown.name);
+    setPreviousMovement(previousTown === undefined ? null : previousTown.name);
   }
 
 
@@ -59,6 +59,9 @@ const Main = () => {
       <div className={Style.controlPanelBg} style={{
         width: docMode ? "50vw" : "33.3vw"
       }} />
+      <div className={Style.aboutButton}>
+        <i>ABOUT AXAMER FOLIO</i>
+      </div>
       <div className={Style.controlPanel} style={{
         width: docMode ? "50vw" : "33.3vw"
       }}>
@@ -70,7 +73,7 @@ const Main = () => {
           <ReactPlayer
             ref={videoRef}
             url={currentJourney.videoURL}
-            playing={false}
+            playing={true}
             controls={true}
             width="100%"
             height="100%"
@@ -83,7 +86,8 @@ const Main = () => {
           Date:<br /><br />
           <hr /><br />
           <b><img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} /> Current Movement:</b> <i>{currentMovement}</i><br />
-          <b><img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} /> Next Movement:</b>  <i>{nextMovement}</i>
+          <b><span style={{ backgroundColor: "red" }}>Next Movement</span>:</b>  <i>{nextMovement}</i><br />
+          <b><span style={{ backgroundColor: "blue" }}>Previous Movement</span>:</b>  <i>{previousMovement}</i>
         </div>
       </div>
 

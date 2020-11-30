@@ -123,6 +123,15 @@
   top: 1vw;
 }
 
+.aboutButton {
+  position: absolute;
+  z-index: 10;
+  padding: 1%;
+  left: 66%;
+  top: 12vh;
+  border: 1px solid white;
+  background-color: #bebebe;
+}
 
 /**
 * Removes borders from input
