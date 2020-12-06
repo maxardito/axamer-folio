@@ -1,10 +1,13 @@
 import React, { useState, createRef } from "react";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Style from "./main.module.scss";
 import ReactPlayer from "react-player/lazy";
 import Maps from "./Maps/Maps.js"
 import Journeys from "./Journey/Journeys.json";
 import Checkbox from "react-checkbox-component"
+import Movements from "./Movements.json";
+
 //import Rendering from "./Rendering.js";
 
 
@@ -12,23 +15,39 @@ const Main = () => {
   const videoRef = createRef()
 
   const [visible, setVisible] = useState([true, false, false])
-  const [dropDown, setDropDown] = useState(false);
-  const [docMode, setDocMode] = useState(true);
+  const [docMode] = useState(true);
   const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
+
+  const [tabIndex, setTabIndex] = useState(0);
+  const [tabColor, setTabColor] = useState(['blue', 'black', 'black']);
 
   const [videoVisibility, setVideoVisibility] = useState('visible')
 
   const [polygonOpacity, setPolygonOpacity] = useState(0.7)
-  const [currentMovement, setCurrentMovement] = useState(null)
-  const [nextMovement, setNextMovement] = useState(null)
-  const [previousMovement, setPreviousMovement] = useState(null)
 
-  function handleTownChange(selectedTown, nextTown, previousTown) {
-    setCurrentMovement(selectedTown === undefined ? null : selectedTown.name)
-    setNextMovement(nextTown === undefined ? null : nextTown.name);
-    setPreviousMovement(previousTown === undefined ? null : previousTown.name);
+  const [currentSaxVector, setCurrentSaxVector] = useState([" ", " "])
+  const [currentDrumVector, setCurrentDrumVector] = useState([" ", " "])
+
+  function handleTownChange(saxVector, drumVector) {
+    setCurrentSaxVector(saxVector === null ? [" ", " "] : [Movements.metadata[saxVector[0]].name, Movements.metadata[saxVector[1]].name]);
+    setCurrentDrumVector(drumVector === null ? [" ", " "] : [Movements.metadata[drumVector[0]].name, Movements.metadata[drumVector[1]].name]);
   }
 
+  function handleTabChange(index) {
+    setTabIndex(index)
+    setVideoVisibility(index === 0 ? 'visible' : 'hidden')
+
+    let tabColors;
+
+    if (index === 0) {
+      tabColors = ['blue', 'black', 'black']
+    } else if (index === 1) {
+      tabColors = ['black', 'blue', 'black']
+    } else {
+      tabColors = ['black', 'black', 'blue']
+    }
+    setTabColor(tabColors)
+  }
 
   return (
     <>
@@ -41,8 +60,7 @@ const Main = () => {
           <img
             src={"/pin.png"}
             className={Style.ensembleMenuHamburger}
-            alt={"Ensemble Menu"}
-            onClick={() => { setDropDown(!dropDown) }}
+            alt={"Rainbow Cube"}
           />
         </div>
         <Maps videoRef={videoRef}
@@ -59,89 +77,86 @@ const Main = () => {
       <div className={Style.controlPanelBg} style={{
         width: docMode ? "50vw" : "33.3vw"
       }} />
-      <div className={Style.aboutButton}>
-        <i>ABOUT AXAMER FOLIO</i>
-      </div>
       <div className={Style.controlPanel} style={{
         width: docMode ? "50vw" : "33.3vw"
       }}>
-        <div className={Style.reactPlayerContainer} style={{
-          width: docMode ? "46vw" : "30vw",
-          height: docMode ? "25.85vw" : "17vw",
-          visibility: videoVisibility
-        }}>
-          <ReactPlayer
-            ref={videoRef}
-            url={currentJourney.videoURL}
-            playing={true}
-            controls={true}
-            width="100%"
-            height="100%"
-            onPlay={() => { setPolygonOpacity(0) }}
-            onPause={() => { setPolygonOpacity(0.7) }}
-          />
-          <br />
+        <Tabs selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
+          <TabList>
+            <Tab className={Style.tab} style={{ float: 'left', left: '0vw', backgroundColor: tabColor[0] }}>Folio</Tab>
+            <Tab className={Style.tab} style={{ float: 'right', left: '33%', backgroundColor: tabColor[1] }}>Notes</Tab>
+            <Tab className={Style.tab} style={{ float: 'right', left: '66%', backgroundColor: tabColor[2] }}>Ensembles</Tab>
+          </TabList>
+
+          <TabPanel forceRender={true}>
+            <div className={Style.reactPlayerContainer} style={{
+              width: docMode ? "46vw" : "30vw",
+              height: docMode ? "25.85vw" : "17vw",
+              visibility: videoVisibility
+            }}>
+              <ReactPlayer
+                ref={videoRef}
+                url={currentJourney.videoURL}
+                playing={true}
+                controls={true}
+                width="100%"
+                height="100%"
+                onPlay={() => { setPolygonOpacity(0) }}
+                onPause={() => { setPolygonOpacity(0.7) }}
+              />
+              <br />
           Ensemble:<br />
           Venue:<br />
           Date:<br /><br />
-          <hr /><br />
-          <b><img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} /> Current Movement:</b> <i>{currentMovement}</i><br />
-          <b><span style={{ backgroundColor: "red" }}>Next Movement</span>:</b>  <i>{nextMovement}</i><br />
-          <b><span style={{ backgroundColor: "blue" }}>Previous Movement</span>:</b>  <i>{previousMovement}</i>
-        </div>
-      </div>
+              <hr /><br />
+              <b><span style={{ backgroundColor: "red" }}>Saxophone</span>:</b> {currentSaxVector[0]} -> <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentSaxVector[1]}</i><br />
+              <b><span style={{ backgroundColor: "blue" }}>Drums</span>:</b> {currentDrumVector[0]} -> <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentDrumVector[1]}</i>
+            </div>
+          </TabPanel>
 
-      {/*<div className={Style.pinTitle}>
-        <img
-          alt={"Title"}
-          src={"popups/" + scoreID + ".jpg"}
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>*/}
+          <TabPanel>
+            Notes
+          </TabPanel>
 
+          <TabPanel>
+            <div className={Style.ensembleMenuPanel}>
+              {Journeys.metadata.map((journey, key) => {
+                return (
+                  <>
+                    <Checkbox
+                      size="big"
+                      isChecked={visible[key]}
+                      onChange={() => {
+                        if (docMode) {
+                          let nextArray = visible.slice();
 
-      {/** Dropdown ensemble menu logic */}
-      {
-        dropDown ? (
-          <div className={Style.ensembleMenuPanel}>
-            {Journeys.metadata.map((journey, key) => {
-              return (
-                <>
-                  <Checkbox
-                    size="big"
-                    isChecked={visible[key]}
-                    onChange={() => {
-                      if (docMode) {
-                        let nextArray = visible.slice();
+                          for (var i = 0; i < visible.length; i++) {
+                            if (i !== key)
+                              nextArray[i] = false;
+                            else
+                              nextArray[i] = true;
+                          }
+                          setCurrentJourney(Journeys.metadata[key]);
+                          setVisible(nextArray);
+                        } else {
+                          let v = visible[key];
 
-                        for (var i = 0; i < visible.length; i++) {
-                          if (i !== key)
-                            nextArray[i] = false;
-                          else
-                            nextArray[i] = true;
+                          let nextArray = visible.slice();
+                          nextArray[key] = !v;
+
+                          setVisible(nextArray);
                         }
-                        setCurrentJourney(Journeys.metadata[key]);
-                        setVisible(nextArray);
-                        setDropDown(false)
-                      } else {
-                        let v = visible[key];
 
-                        let nextArray = visible.slice();
-                        nextArray[key] = !v;
-
-                        setVisible(nextArray);
-                      }
-
-                    }}
-                    color={journey.fillColor} />
-                  {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
-                  <hr />
-                </>
-              )
-            })}
-          </div>
-        ) : null
-      }
+                      }}
+                      color={journey.fillColor} />
+                    {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
+                    <hr />
+                  </>
+                )
+              })}
+            </div>
+          </TabPanel>
+        </Tabs>
+      </div>
     </>
   );
 };

@@ -17,9 +17,6 @@
   width: 10vh;
   padding-right: 1vw;
   padding-top: 0.5vw;
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 .controlPanelBg {
@@ -95,7 +92,7 @@
   position: relative;
   width: 50vw;
   height: 37vw;
-  top: 7vw;
+  top: 5vw;
   left: 2vw;
   border: 0.1vw solid white;
   margin-bottom: 2vw;
@@ -121,16 +118,6 @@
   position: fixed;
   background-color: black;
   top: 1vw;
-}
-
-.aboutButton {
-  position: absolute;
-  z-index: 10;
-  padding: 1%;
-  left: 66%;
-  top: 12vh;
-  border: 1px solid white;
-  background-color: #bebebe;
 }
 
 /**

@@ -7,41 +7,44 @@
             "date": "09/17/20",
             "videoURL": "https://www.youtube.com/watch?v=P-rt_hj6VAk",
             "videoLength": 1161,
-            "sequence": [
-                0,
-                9,
-                19,
-                13,
-                3,
-                13,
-                13,
-                20,
+            "drumSequence": [
                 [
-                    7,
-                    18
+                    0,
+                    14
                 ],
-                25,
                 [
                     14,
-                    15
+                    19
                 ],
-                4,
-                11
+                [
+                    19,
+                    13
+                ],
+                [
+                    13,
+                    2
+                ]
+            ],
+            "saxSequence": [
+                null,
+                [
+                    9,
+                    12
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    13,
+                    2
+                ]
             ],
             "timeStamps": [
                 0,
                 77,
                 104,
-                176,
-                207,
-                221,
-                245,
-                293,
-                618,
-                685,
-                733,
-                775,
-                915
+                176
             ],
             "strokeColor": "orange",
             "fillColor": "yellow"
@@ -53,30 +56,44 @@
             "date": "09/08/20",
             "videoURL": "https://www.youtube.com/watch?v=3JFbQgrFQD4",
             "videoLength": 758,
-            "sequence": [
-                3,
-                13,
-                24,
-                19,
-                2,
-                15,
-                14,
-                8,
-                24,
-                5,
-                13
+            "drumSequence": [
+                [
+                    0,
+                    14
+                ],
+                [
+                    14,
+                    19
+                ],
+                [
+                    19,
+                    13
+                ],
+                [
+                    13,
+                    10
+                ]
+            ],
+            "saxSequence": [
+                null,
+                [
+                    9,
+                    12
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    13,
+                    10
+                ]
             ],
             "timeStamps": [
                 0,
-                149,
-                186,
-                204,
-                233,
-                444,
-                521,
-                539,
-                593,
-                720
+                77,
+                104,
+                176
             ],
             "strokeColor": "#B4005D",
             "fillColor": "blue"
@@ -86,16 +103,38 @@
             "name": "Ensemble B",
             "venue": "Space",
             "date": "09/17/20",
-            "sequence": [
-                2,
-                15,
-                13,
-                11,
-                10,
-                3,
-                4,
-                8,
-                9
+            "drumSequence": [
+                [
+                    0,
+                    14
+                ],
+                [
+                    14,
+                    19
+                ],
+                [
+                    19,
+                    13
+                ],
+                [
+                    13,
+                    2
+                ]
+            ],
+            "saxSequence": [
+                null,
+                [
+                    9,
+                    12
+                ],
+                [
+                    12,
+                    13
+                ],
+                [
+                    13,
+                    2
+                ]
             ],
             "timeStamps": [
                 0,

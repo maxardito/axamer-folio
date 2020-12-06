@@ -14,10 +14,10 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, nextTown, previousTown, polygonOpacity }) => {
+const Journey = ({ drumSequence, saxSequence, strokeColor, fillColor, visible, drumVector, saxVector, polygonOpacity }) => {
 
-    const polygonOption = {
-        strokeColor: strokeColor,
+    const drumPolygonOption = {
+        strokeColor: "orange",
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: fillColor,
@@ -30,17 +30,31 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
         zIndex: 0
     };
 
-    const nextTownPolyline = {
+    const saxPolygonOption = {
+        strokeColor: "yellow",
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: fillColor,
+        fillOpacity: polygonOpacity,
+        clickable: false,
+        draggable: false,
+        editable: false,
+        visible: visible,
+        radius: 30000,
+        zIndex: 0
+    };
+
+    const drumPolyline = {
         geodesic: true,
-        strokeColor: "red",
+        strokeColor: "blue",
         visible: visible,
         strokeOpacity: 1,
         strokeWeight: 6,
     };
 
-    const previousTownPolyline = {
+    const saxPolyline = {
         geodesic: true,
-        strokeColor: "blue",
+        strokeColor: "red",
         visible: visible,
         strokeOpacity: 1,
         strokeWeight: 6,
@@ -54,77 +68,92 @@ const Journey = ({ sequence, strokeColor, fillColor, visible, selectedTown, next
         strokeWeight: 6,
     };
 
-    function getSelectedTownCoordinates(backwards) {
-        let direction = backwards ? 0 : 1
-        if (Array.isArray(selectedTown)) {
-            return { lat: selectedTown[direction].lat, lng: selectedTown[direction].lng }
-        } else {
-            return { lat: selectedTown.lat, lng: selectedTown.lng }
+    function getCoordinates(vector) {
+        if (vector === null) {
+            return false;
         }
+        else
+            return [
+                { lat: Movements.metadata[vector[0]].lat, lng: Movements.metadata[vector[0]].lng },
+                { lat: Movements.metadata[vector[1]].lat, lng: Movements.metadata[vector[1]].lng }
+            ]
     }
 
-    function getNextTownCoordinates() {
-        if (Array.isArray(nextTown)) {
-            return { lat: nextTown[0].lat, lng: nextTown[0].lng }
-        } else {
-            return { lat: nextTown.lat, lng: nextTown.lng }
+    function vectorsEqual(vector1, vector2) {
+        if (vector1 === null || vector2 === null) {
+            return false
         }
-    }
-
-    function getPreviousTownCoordinates() {
-        if (Array.isArray(previousTown)) {
-            return { lat: previousTown[1].lat, lng: previousTown[1].lng }
+        if (vector1[0] === vector2[0] && vector1[1] === vector2[1]) {
+            return true
         } else {
-            return { lat: previousTown.lat, lng: previousTown.lng }
+            return false
         }
     }
 
     return (
         <>
             <Polygon
-                paths={sequence.map((num, key) => {
-                    if (Array.isArray(num)) {
-                        return ({
-                            lat: Movements.metadata[num[0]].lat,
-                            lng: Movements.metadata[num[0]].lng
-                        },
-                        {
-                            lat: Movements.metadata[num[1]].lat,
-                            lng: Movements.metadata[num[1]].lng
-                        })
-                    } else {
-                        return {
-                            lat: Movements.metadata[num].lat,
-                            lng: Movements.metadata[num].lng
-                        }
-                    }
+                paths={drumSequence.filter(function (path) {
+                    if (path === null)
+                        return false
+                    else return true
+                }).map((path, key) => {
+                    return ({
+                        lat: Movements.metadata[path[0]].lat,
+                        lng: Movements.metadata[path[0]].lng
+                    },
+                    {
+                        lat: Movements.metadata[path[1]].lat,
+                        lng: Movements.metadata[path[1]].lng
+                    })
                 })}
-                options={polygonOption}
+                options={drumPolygonOption}
             />
-            <Polyline
-                path={[
-                    getSelectedTownCoordinates(false),
-                    getNextTownCoordinates()]
-                }
-                options={nextTownPolyline}
-
+            <Polygon
+                paths={saxSequence.filter(function (path) {
+                    if (path === null)
+                        return false
+                    else return true
+                }).map((path, key) => {
+                    return ({
+                        lat: Movements.metadata[path[0]].lat,
+                        lng: Movements.metadata[path[0]].lng
+                    },
+                    {
+                        lat: Movements.metadata[path[1]].lat,
+                        lng: Movements.metadata[path[1]].lng
+                    })
+                })}
+                options={saxPolygonOption}
             />
-            <Polyline
-                path={[
-                    getSelectedTownCoordinates(true),
-                    getPreviousTownCoordinates()]
-                }
-                options={previousTownPolyline}
+            {
+                vectorsEqual(drumVector, saxVector) === false ?
+                    Array.isArray(drumVector) === true ?
+                        <Polyline
+                            path={getCoordinates(drumVector)}
+                            options={drumPolyline}
 
-            />
-            {Array.isArray(selectedTown) ? <Polyline
-                path={[
-                    { lat: selectedTown[0].lat, lng: selectedTown[0].lng },
-                    { lat: selectedTown[1].lat, lng: selectedTown[1].lng }]
-                }
-                options={asyncTownPolyline}
+                        /> : null
+                    : null
+            }
+            {
+                vectorsEqual(drumVector, saxVector) === false ?
+                    Array.isArray(saxVector) === true ?
+                        <Polyline
+                            path={getCoordinates(saxVector)}
+                            options={saxPolyline}
 
-            /> : null}
+                        /> : null
+                    : null
+            }
+            {
+                vectorsEqual(drumVector, saxVector) === true ?
+                    <Polyline
+                        path={getCoordinates(saxVector)}
+                        options={asyncTownPolyline}
+                    />
+                    : null
+            }
         </>
     )
 }

@@ -1,12 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
     GoogleMap,
     useLoadScript,
     Marker,
     InfoWindow,
 } from "@react-google-maps/api";
-
-import { SelectedTownContext } from "../../contexts/SelectedTown.js"
 
 import mapStyles from "./MapStyles.js";
 import Journey from "../Journey/Journey.js";
@@ -16,7 +14,7 @@ import Style from "./maps.module.scss";
 
 const libraries = [null];
 
-const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journeyVisibility, docMode, polygonOpacity }) => {
+const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMode, polygonOpacity }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -60,12 +58,10 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
 
     function getPinIcon(pin) {
         if (docMode) {
-            if ((selectedTown ? selectedTown.id : 0) === pin.id) {
+            if ((drumVector ? Movements.metadata[drumVector[1]].id : false) === pin.id) {
                 return pinPng;
-                /* } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id + 1) {
-                     return '/nextPin.png'
-                 } else if (currentJourney.sequence.findIndex(function (e) { return e === pin.id }) === selectedTown.id - 1) {
-                     return '/previousPin.png'*/
+            } else if ((saxVector ? Movements.metadata[saxVector[1]].id : false) === pin.id) {
+                return pinPng
             } else {
                 return '/dot.png'
             }
@@ -74,9 +70,9 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         }
     }
 
-    const [selectedTown, setSelectedTown] = useContext(SelectedTownContext);
-    const [nextTown, setNextTown] = useState(null)
-    const [previousTown, setPreviousTown] = useState(null)
+    const [drumVector, setDrumVector] = useState(null);
+    const [saxVector, setSaxVector] = useState(null);
+
     const [currentIndex, setCurrentIndex] = useState(0)
     const [journeyRef, setJourneyRef] = useState(currentJourney)
     const [infoWindow, setInfoWindow] = useState(0)
@@ -86,12 +82,9 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
         let pinGate = false;
 
         if (!isLoaded) {
-            setSelectedTown(Movements.metadata[currentJourney.sequence[currentIndex]]);
-            setNextTown(Movements.metadata[currentJourney.sequence[currentIndex + 1]]);
-            setPreviousTown(Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
-            onTownChange(Movements.metadata[currentJourney.sequence[currentIndex]],
-                Movements.metadata[currentJourney.sequence[currentIndex + 1]],
-                Movements.metadata[currentJourney.sequence[currentIndex - 1]]);
+            setDrumVector(currentJourney.drumSequence[currentIndex]);
+            setSaxVector(currentJourney.saxSequence[currentIndex]);
+            onTownChange(currentJourney.saxSequence[currentIndex], currentJourney.drumSequence[currentIndex]);
         }
 
         const interval = setInterval(() => {
@@ -100,7 +93,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
              * based on video timestamps
              */
             let currentTime = Math.trunc(videoRef.current ? videoRef.current.getCurrentTime() : 0);
-            for (var i = 0; i < currentJourney.sequence.length; i++) {
+            for (var i = 0; i < currentJourney.timeStamps.length; i++) {
                 let currentTown = currentJourney.timeStamps[i];
                 let nextTown = currentJourney.timeStamps[i + 1] ? currentJourney.timeStamps[i + 1] : currentJourney.videoLength;
                 if (currentTime >= currentTown && currentTime < nextTown) {
@@ -108,23 +101,17 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                     // If timestamp changes
                     if (currentIndex !== i) {
                         setCurrentIndex(i)
-                        setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
-                        setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
-                        setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
-                        onTownChange(Movements.metadata[currentJourney.sequence[i]],
-                            Movements.metadata[currentJourney.sequence[i + 1]],
-                            Movements.metadata[currentJourney.sequence[currentIndex - 1]])
+                        setDrumVector(currentJourney.drumSequence[i])
+                        setSaxVector(currentJourney.saxSequence[i])
+                        onTownChange(currentJourney.saxSequence[i], currentJourney.drumSequence[i])
                         setCenter(DEFAULT_CENTER)
                     }
 
                     // If journey changes
                     if (journeyRef !== currentJourney) {
-                        setSelectedTown(Movements.metadata[currentJourney.sequence[i]])
-                        setNextTown(Movements.metadata[currentJourney.sequence[i + 1]])
-                        setPreviousTown(Movements.metadata[currentJourney.sequence[i - 1]]);
-                        onTownChange(Movements.metadata[currentJourney.sequence[i]],
-                            Movements.metadata[currentJourney.sequence[i + 1]],
-                            Movements.metadata[currentJourney.sequence[currentIndex - 1]])
+                        setDrumVector(currentJourney.drumSequence[i])
+                        setSaxVector(currentJourney.saxSequence[i])
+                        onTownChange(currentJourney.saxSequence[i], currentJourney.drumSequence[i])
                         setJourneyRef(currentJourney)
                         setCenter(DEFAULT_CENTER)
                     }
@@ -139,7 +126,7 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
 
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, onTownChange, setSelectedTown, currentJourney, journeyRef, isLoaded, currentIndex, DEFAULT_CENTER]);
+    }, [videoRef, onTownChange, setDrumVector, setSaxVector, currentJourney, journeyRef, isLoaded, currentIndex, DEFAULT_CENTER]);
 
     if (loadError) return "Error loading maps";
     if (!isLoaded) return "Loading maps";
@@ -156,22 +143,21 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                 {Journeys.metadata.map((journey, key) => {
                     return <Journey
                         visible={journeyVisibility[key]}
-                        sequence={journey.sequence}
+                        drumSequence={journey.drumSequence}
+                        saxSequence={journey.saxSequence}
                         strokeColor={journey.strokeColor}
                         fillColor={docMode ? "2A2321" : journey.fillColor}
                         key={key}
-                        selectedTown={selectedTown}
-                        nextTown={nextTown ? nextTown : selectedTown}
-                        previousTown={previousTown ? previousTown : selectedTown}
+                        drumVector={drumVector}
+                        saxVector={saxVector}
                         polygonOpacity={polygonOpacity}
                     />
                 })}
 
                 {/** Pins, text bubbles, markers */}
                 {Movements.metadata.map((pin) => (
-                    <div className={Style.blinkingMarker}>
+                    <div className={Style.blinkingMarker} key={pin.id}>
                         <Marker
-                            key={pin.id}
                             position={{ lat: pin.lat, lng: pin.lng }}
                             icon={{
                                 url: getPinIcon(pin),
@@ -186,32 +172,48 @@ const Maps = ({ videoRef, selectedTownRef, currentJourney, onTownChange, journey
                                 setInfoWindow(null)
                             }}
                             onClick={() => {
-                                videoRef.current.seekTo(currentJourney.timeStamps[currentJourney.sequence.findIndex(function (e) { return e === pin.id })])
+                                let drumIndex = currentJourney.drumSequence.findIndex(function (e) { return e ? e[0] === pin.id : false });
+                                let saxIndex = currentJourney.saxSequence.findIndex(function (e) { return e ? e[0] === pin.id : false })
+                                videoRef.current.seekTo(currentJourney.timeStamps[drumIndex ? drumIndex : saxIndex])
                             }}
                         />
                     </div>
                 ))}
 
                 {/** Pin bubble pop-up logic */}
-                {selectedTown ?
+                {drumVector ?
                     (
                         <>
-                            <InfoWindow position={{ lat: selectedTown.lat, lng: selectedTown.lng }}
+                            <InfoWindow position={{ lat: Movements.metadata[drumVector[0]].lat, lng: Movements.metadata[drumVector[0]].lng }}
                                 options={infoOptions}
                             >
                                 <div>
-                                    <b>{selectedTown.name}</b>
+                                    <b>{Movements.metadata[drumVector[0]].name}</b>
                                 </div>
                             </InfoWindow>
-                            {(infoWindow ? <InfoWindow position={{ lat: Movements.metadata[infoWindow].lat, lng: Movements.metadata[infoWindow].lng }}
+                        </>
+                    ) : null}
+
+                {saxVector ?
+                    (
+                        <>
+                            <InfoWindow position={{ lat: Movements.metadata[saxVector[0]].lat, lng: Movements.metadata[saxVector[0]].lng }}
                                 options={infoOptions}
                             >
                                 <div>
-                                    <i>{Movements.metadata[infoWindow].name}</i>
+                                    <b>{Movements.metadata[saxVector[0]].name}</b>
                                 </div>
-                            </InfoWindow> : null)}
+                            </InfoWindow>
                         </>
                     ) : null}
+
+                {(infoWindow ? <InfoWindow position={{ lat: Movements.metadata[infoWindow].lat, lng: Movements.metadata[infoWindow].lng }}
+                    options={infoOptions}
+                >
+                    <div>
+                        <i>{Movements.metadata[infoWindow].name}</i>
+                    </div>
+                </InfoWindow> : null)}
             </GoogleMap>
         </div>
     )
