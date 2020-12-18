@@ -7,37 +7,25 @@
             "date": "09/17/20",
             "videoURL": "https://www.youtube.com/watch?v=P-rt_hj6VAk",
             "videoLength": 1161,
-            "drumSequence": [
+            "blueLine": [
                 [
                     0,
-                    14
-                ],
-                [
-                    14,
                     19
                 ],
                 [
-                    19,
-                    13
+                    0,
+                    19
                 ],
                 [
-                    13,
-                    2
+                    0,
+                    19
                 ]
             ],
-            "saxSequence": [
+            "redLine": [
                 null,
                 [
                     9,
-                    12
-                ],
-                [
-                    12,
                     13
-                ],
-                [
-                    13,
-                    2
                 ]
             ],
             "timeStamps": [
@@ -56,7 +44,7 @@
             "date": "09/08/20",
             "videoURL": "https://www.youtube.com/watch?v=3JFbQgrFQD4",
             "videoLength": 758,
-            "drumSequence": [
+            "blueLine": [
                 [
                     0,
                     14
@@ -74,7 +62,7 @@
                     10
                 ]
             ],
-            "saxSequence": [
+            "redLine": [
                 null,
                 [
                     9,
@@ -103,7 +91,7 @@
             "name": "Ensemble B",
             "venue": "Space",
             "date": "09/17/20",
-            "drumSequence": [
+            "blueLine": [
                 [
                     0,
                     14
@@ -121,7 +109,7 @@
                     2
                 ]
             ],
-            "saxSequence": [
+            "redLine": [
                 null,
                 [
                     9,

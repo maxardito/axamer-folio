@@ -14,7 +14,7 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ drumSequence, saxSequence, strokeColor, fillColor, visible, drumVector, saxVector, polygonOpacity }) => {
+const Journey = ({ blueLine, redLine, strokeColor, fillColor, visible, drumVector, saxVector, polygonOpacity }) => {
 
     const drumPolygonOption = {
         strokeColor: "orange",
@@ -93,7 +93,7 @@ const Journey = ({ drumSequence, saxSequence, strokeColor, fillColor, visible, d
     return (
         <>
             <Polygon
-                paths={drumSequence.filter(function (path) {
+                paths={blueLine.filter(function (path) {
                     if (path === null)
                         return false
                     else return true
@@ -110,7 +110,7 @@ const Journey = ({ drumSequence, saxSequence, strokeColor, fillColor, visible, d
                 options={drumPolygonOption}
             />
             <Polygon
-                paths={saxSequence.filter(function (path) {
+                paths={redLine.filter(function (path) {
                     if (path === null)
                         return false
                     else return true

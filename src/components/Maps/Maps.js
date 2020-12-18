@@ -82,9 +82,9 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
         let pinGate = false;
 
         if (!isLoaded) {
-            setDrumVector(currentJourney.drumSequence[currentIndex]);
-            setSaxVector(currentJourney.saxSequence[currentIndex]);
-            onTownChange(currentJourney.saxSequence[currentIndex], currentJourney.drumSequence[currentIndex]);
+            setDrumVector(currentJourney.blueLine[currentIndex]);
+            setSaxVector(currentJourney.redLine[currentIndex]);
+            onTownChange(currentJourney.redLine[currentIndex], currentJourney.blueLine[currentIndex]);
         }
 
         const interval = setInterval(() => {
@@ -101,17 +101,17 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                     // If timestamp changes
                     if (currentIndex !== i) {
                         setCurrentIndex(i)
-                        setDrumVector(currentJourney.drumSequence[i])
-                        setSaxVector(currentJourney.saxSequence[i])
-                        onTownChange(currentJourney.saxSequence[i], currentJourney.drumSequence[i])
+                        setDrumVector(currentJourney.blueLine[i])
+                        setSaxVector(currentJourney.redLine[i])
+                        onTownChange(currentJourney.redLine[i], currentJourney.blueLine[i])
                         setCenter(DEFAULT_CENTER)
                     }
 
                     // If journey changes
                     if (journeyRef !== currentJourney) {
-                        setDrumVector(currentJourney.drumSequence[i])
-                        setSaxVector(currentJourney.saxSequence[i])
-                        onTownChange(currentJourney.saxSequence[i], currentJourney.drumSequence[i])
+                        setDrumVector(currentJourney.blueLine[i])
+                        setSaxVector(currentJourney.redLine[i])
+                        onTownChange(currentJourney.redLine[i], currentJourney.blueLine[i])
                         setJourneyRef(currentJourney)
                         setCenter(DEFAULT_CENTER)
                     }
@@ -143,8 +143,8 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                 {Journeys.metadata.map((journey, key) => {
                     return <Journey
                         visible={journeyVisibility[key]}
-                        drumSequence={journey.drumSequence}
-                        saxSequence={journey.saxSequence}
+                        blueLine={journey.blueLine}
+                        redLine={journey.redLine}
                         strokeColor={journey.strokeColor}
                         fillColor={docMode ? "2A2321" : journey.fillColor}
                         key={key}
@@ -172,8 +172,8 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                                 setInfoWindow(null)
                             }}
                             onClick={() => {
-                                let drumIndex = currentJourney.drumSequence.findIndex(function (e) { return e ? e[0] === pin.id : false });
-                                let saxIndex = currentJourney.saxSequence.findIndex(function (e) { return e ? e[0] === pin.id : false })
+                                let drumIndex = currentJourney.blueLine.findIndex(function (e) { return e ? e[0] === pin.id : false });
+                                let saxIndex = currentJourney.redLine.findIndex(function (e) { return e ? e[0] === pin.id : false })
                                 videoRef.current.seekTo(currentJourney.timeStamps[drumIndex ? drumIndex : saxIndex])
                             }}
                         />
