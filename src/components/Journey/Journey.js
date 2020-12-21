@@ -1,6 +1,6 @@
 import React from "react"
 import {
-    // Polygon,
+    Polygon,
     Polyline
 } from "@react-google-maps/api"
 import Movements from "../Movements.json";
@@ -14,21 +14,34 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ polygon, strokeColor, fillColor, visible, drumVector, saxVector, duoVector, polygonOpacity }) => {
+const Journey = ({ visible, drumSequence, saxSequence, strokeColor, fillColor, drumVector, saxVector, duoVector, polygonOpacity }) => {
+    const drumPolygonOption = {
+        strokeColor: "orange",
+        strokeOpacity: 1,
+        strokeWeight: 1,
+        fillColor: fillColor,
+        fillOpacity: polygonOpacity,
+        clickable: false,
+        draggable: false,
+        editable: false,
+        visible: visible,
+        radius: 30000,
+        zIndex: 0
+    };
 
-    // const drumPolygonOption = {
-    //     strokeColor: "orange",
-    //     strokeOpacity: 1,
-    //     strokeWeight: 2,
-    //     fillColor: fillColor,
-    //     fillOpacity: polygonOpacity,
-    //     clickable: false,
-    //     draggable: false,
-    //     editable: false,
-    //     visible: visible,
-    //     radius: 30000,
-    //     zIndex: 0
-    // };
+    const saxPolygonOption = {
+        strokeColor: "yellow",
+        strokeOpacity: 1,
+        strokeWeight: 1,
+        fillColor: fillColor,
+        fillOpacity: polygonOpacity,
+        clickable: false,
+        draggable: false,
+        editable: false,
+        visible: visible,
+        radius: 30000,
+        zIndex: 0
+    };
 
     const drumPolyline = {
         geodesic: true,
@@ -67,17 +80,42 @@ const Journey = ({ polygon, strokeColor, fillColor, visible, drumVector, saxVect
         }
     }
 
+    let drumPolygon, saxPolygon;
+    if (drumSequence) {
+        drumPolygon = drumSequence.map((town, key) => {
+            return ({
+                lat: Movements.metadata[town].lat,
+                lng: Movements.metadata[town].lng
+            })
+        });
+    } else {
+        drumPolygon = "Loading...";
+    }
+
+    if (saxSequence) {
+        saxPolygon = saxSequence.map((town, key) => {
+            return ({
+                lat: Movements.metadata[town].lat,
+                lng: Movements.metadata[town].lng
+            })
+        });
+    } else {
+        saxPolygon = "Loading...";
+    }
+
+
+
     return (
         <>
-            {/* <Polygon
-                paths={polygon.map((town, key) => {
-                    return ({
-                        lat: Movements.metadata[town].lat,
-                        lng: Movements.metadata[town].lng
-                    })
-                })}
+            <Polygon
+                paths={drumPolygon}
                 options={drumPolygonOption}
-            /> */}
+            />
+
+            <Polygon
+                paths={saxPolygon}
+                options={saxPolygonOption}
+            />
 
 
             {

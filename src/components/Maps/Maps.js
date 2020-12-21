@@ -62,6 +62,8 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                 return pinPng;
             } else if ((saxVector && (saxPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) {
                 return pinPng
+            } else if ((duoVector && (saxPin && drumPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) {
+                return pinPng
             } else {
                 return '/dot.png'
             }
@@ -167,7 +169,8 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                 {Journeys.metadata.map((journey, key) => {
                     return <Journey
                         visible={journeyVisibility[key]}
-                        polygon={journey.polygon}
+                        drumSequence={journey.polygonDrum}
+                        saxSequence={journey.polygonSax}
                         strokeColor={journey.strokeColor}
                         fillColor={docMode ? "2A2321" : journey.fillColor}
                         key={key}
@@ -226,6 +229,19 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                     ) : null}
 
                 {saxVector && (saxPin !== null) ?
+                    (
+                        <>
+                            <InfoWindow position={{ lat: Movements.metadata[saxPin].lat, lng: Movements.metadata[saxPin].lng }}
+                                options={infoOptions}
+                            >
+                                <div>
+                                    <b>{Movements.metadata[saxPin].name}</b>
+                                </div>
+                            </InfoWindow>
+                        </>
+                    ) : null}
+
+                {duoVector && (saxPin && drumPin !== null) ?
                     (
                         <>
                             <InfoWindow position={{ lat: Movements.metadata[saxPin].lat, lng: Movements.metadata[saxPin].lng }}
