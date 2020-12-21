@@ -58,9 +58,9 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
 
     function getPinIcon(pin) {
         if (docMode) {
-            if ((drumVector ? Movements.metadata[drumVector[1]].id : false) === pin.id) {
+            if ((drumVector && (drumPin !== null) ? Movements.metadata[drumPin].id : false) === pin.id) {
                 return pinPng;
-            } else if ((saxVector ? Movements.metadata[saxVector[1]].id : false) === pin.id) {
+            } else if ((saxVector && (saxPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) {
                 return pinPng
             } else {
                 return '/dot.png'
@@ -72,6 +72,11 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
 
     const [drumVector, setDrumVector] = useState(null);
     const [saxVector, setSaxVector] = useState(null);
+    const [duoVector, setDuoVector] = useState(null);
+    const [drumPin, setDrumPin] = useState(null);
+    const [saxPin, setSaxPin] = useState(null);
+
+
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const [journeyRef, setJourneyRef] = useState(currentJourney)
@@ -84,7 +89,12 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
         if (!isLoaded) {
             setDrumVector(currentJourney.blueLine[currentIndex]);
             setSaxVector(currentJourney.redLine[currentIndex]);
-            onTownChange(currentJourney.redLine[currentIndex], currentJourney.blueLine[currentIndex]);
+            setDuoVector(currentJourney.purpleLine[currentIndex]);
+            setDrumPin(currentJourney.drumPins[currentIndex])
+            setSaxPin(currentJourney.saxPins[currentIndex])
+            onTownChange(currentJourney.redLine[currentIndex],
+                currentJourney.blueLine[currentIndex],
+                currentJourney.purpleLine[currentIndex]);
         }
 
         const interval = setInterval(() => {
@@ -103,7 +113,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                         setCurrentIndex(i)
                         setDrumVector(currentJourney.blueLine[i])
                         setSaxVector(currentJourney.redLine[i])
-                        onTownChange(currentJourney.redLine[i], currentJourney.blueLine[i])
+                        setDuoVector(currentJourney.purpleLine[i]);
+                        setDrumPin(currentJourney.drumPins[i])
+                        setSaxPin(currentJourney.saxPins[i])
+
+                        onTownChange(currentJourney.redLine[i],
+                            currentJourney.blueLine[i],
+                            currentJourney.purpleLine[i]);
                         setCenter(DEFAULT_CENTER)
                     }
 
@@ -111,7 +127,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                     if (journeyRef !== currentJourney) {
                         setDrumVector(currentJourney.blueLine[i])
                         setSaxVector(currentJourney.redLine[i])
-                        onTownChange(currentJourney.redLine[i], currentJourney.blueLine[i])
+                        setDuoVector(currentJourney.purpleLine[i]);
+                        setDrumPin(currentJourney.drumPins[i])
+                        setSaxPin(currentJourney.saxPins[i])
+
+                        onTownChange(currentJourney.redLine[i],
+                            currentJourney.blueLine[i],
+                            currentJourney.purpleLine[i]);
                         setJourneyRef(currentJourney)
                         setCenter(DEFAULT_CENTER)
                     }
@@ -126,7 +148,9 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
 
         }, 500);
         return () => clearInterval(interval);
-    }, [videoRef, onTownChange, setDrumVector, setSaxVector, currentJourney, journeyRef, isLoaded, currentIndex, DEFAULT_CENTER]);
+    }, [videoRef, onTownChange, setDrumVector, setSaxVector,
+        setDuoVector, currentJourney, journeyRef, isLoaded,
+        currentIndex, drumPin, saxPin, DEFAULT_CENTER]);
 
     if (loadError) return "Error loading maps";
     if (!isLoaded) return "Loading maps";
@@ -143,13 +167,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                 {Journeys.metadata.map((journey, key) => {
                     return <Journey
                         visible={journeyVisibility[key]}
-                        blueLine={journey.blueLine}
-                        redLine={journey.redLine}
+                        polygon={journey.polygon}
                         strokeColor={journey.strokeColor}
                         fillColor={docMode ? "2A2321" : journey.fillColor}
                         key={key}
                         drumVector={drumVector}
                         saxVector={saxVector}
+                        duoVector={duoVector}
                         polygonOpacity={polygonOpacity}
                     />
                 })}
@@ -174,34 +198,41 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                             onClick={() => {
                                 let drumIndex = currentJourney.blueLine.findIndex(function (e) { return e ? e[0] === pin.id : false });
                                 let saxIndex = currentJourney.redLine.findIndex(function (e) { return e ? e[0] === pin.id : false })
-                                videoRef.current.seekTo(currentJourney.timeStamps[drumIndex ? drumIndex : saxIndex])
+                                let duoIndex = currentJourney.purpleLine.findIndex(function (e) { return e ? e[0] === pin.id : false })
+                                if (drumIndex) {
+                                    videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
+                                } else if (saxIndex) {
+                                    videoRef.current.seekTo(currentJourney.timeStamps[saxIndex])
+                                } else if (duoIndex) {
+                                    videoRef.current.seekTo(currentJourney.timeStamps[duoIndex])
+                                }
                             }}
                         />
                     </div>
                 ))}
 
                 {/** Pin bubble pop-up logic */}
-                {drumVector ?
+                {drumVector && (drumPin !== null) ?
                     (
                         <>
-                            <InfoWindow position={{ lat: Movements.metadata[drumVector[0]].lat, lng: Movements.metadata[drumVector[0]].lng }}
+                            <InfoWindow position={{ lat: Movements.metadata[drumPin].lat, lng: Movements.metadata[drumPin].lng }}
                                 options={infoOptions}
                             >
                                 <div>
-                                    <b>{Movements.metadata[drumVector[0]].name}</b>
+                                    <b>{Movements.metadata[drumPin].name}</b>
                                 </div>
                             </InfoWindow>
                         </>
                     ) : null}
 
-                {saxVector ?
+                {saxVector && (saxPin !== null) ?
                     (
                         <>
-                            <InfoWindow position={{ lat: Movements.metadata[saxVector[0]].lat, lng: Movements.metadata[saxVector[0]].lng }}
+                            <InfoWindow position={{ lat: Movements.metadata[saxPin].lat, lng: Movements.metadata[saxPin].lng }}
                                 options={infoOptions}
                             >
                                 <div>
-                                    <b>{Movements.metadata[saxVector[0]].name}</b>
+                                    <b>{Movements.metadata[saxPin].name}</b>
                                 </div>
                             </InfoWindow>
                         </>
@@ -215,7 +246,7 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                     </div>
                 </InfoWindow> : null)}
             </GoogleMap>
-        </div>
+        </div >
     )
 }
 

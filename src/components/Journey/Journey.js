@@ -1,6 +1,6 @@
 import React from "react"
 import {
-    Polygon,
+    // Polygon,
     Polyline
 } from "@react-google-maps/api"
 import Movements from "../Movements.json";
@@ -14,35 +14,21 @@ import Movements from "../Movements.json";
  * 
  * @param {*} sequence The sequence 
  */
-const Journey = ({ blueLine, redLine, strokeColor, fillColor, visible, drumVector, saxVector, polygonOpacity }) => {
+const Journey = ({ polygon, strokeColor, fillColor, visible, drumVector, saxVector, duoVector, polygonOpacity }) => {
 
-    const drumPolygonOption = {
-        strokeColor: "orange",
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: fillColor,
-        fillOpacity: polygonOpacity,
-        clickable: false,
-        draggable: false,
-        editable: false,
-        visible: visible,
-        radius: 30000,
-        zIndex: 0
-    };
-
-    const saxPolygonOption = {
-        strokeColor: "yellow",
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: fillColor,
-        fillOpacity: polygonOpacity,
-        clickable: false,
-        draggable: false,
-        editable: false,
-        visible: visible,
-        radius: 30000,
-        zIndex: 0
-    };
+    // const drumPolygonOption = {
+    //     strokeColor: "orange",
+    //     strokeOpacity: 1,
+    //     strokeWeight: 2,
+    //     fillColor: fillColor,
+    //     fillOpacity: polygonOpacity,
+    //     clickable: false,
+    //     draggable: false,
+    //     editable: false,
+    //     visible: visible,
+    //     radius: 30000,
+    //     zIndex: 0
+    // };
 
     const drumPolyline = {
         geodesic: true,
@@ -60,7 +46,7 @@ const Journey = ({ blueLine, redLine, strokeColor, fillColor, visible, drumVecto
         strokeWeight: 6,
     };
 
-    const asyncTownPolyline = {
+    const duoPolyline = {
         geodesic: true,
         strokeColor: "purple",
         visible: visible,
@@ -72,85 +58,53 @@ const Journey = ({ blueLine, redLine, strokeColor, fillColor, visible, drumVecto
         if (vector === null) {
             return false;
         }
-        else
-            return [
-                { lat: Movements.metadata[vector[0]].lat, lng: Movements.metadata[vector[0]].lng },
-                { lat: Movements.metadata[vector[1]].lat, lng: Movements.metadata[vector[1]].lng }
-            ]
-    }
+        else {
+            let coordinatePath = vector.map((path, key) => {
+                return { lat: Movements.metadata[path].lat, lng: Movements.metadata[path].lng }
+            })
 
-    function vectorsEqual(vector1, vector2) {
-        if (vector1 === null || vector2 === null) {
-            return false
-        }
-        if (vector1[0] === vector2[0] && vector1[1] === vector2[1]) {
-            return true
-        } else {
-            return false
+            return coordinatePath
         }
     }
 
     return (
         <>
-            <Polygon
-                paths={blueLine.filter(function (path) {
-                    if (path === null)
-                        return false
-                    else return true
-                }).map((path, key) => {
+            {/* <Polygon
+                paths={polygon.map((town, key) => {
                     return ({
-                        lat: Movements.metadata[path[0]].lat,
-                        lng: Movements.metadata[path[0]].lng
-                    },
-                    {
-                        lat: Movements.metadata[path[1]].lat,
-                        lng: Movements.metadata[path[1]].lng
+                        lat: Movements.metadata[town].lat,
+                        lng: Movements.metadata[town].lng
                     })
                 })}
                 options={drumPolygonOption}
-            />
-            <Polygon
-                paths={redLine.filter(function (path) {
-                    if (path === null)
-                        return false
-                    else return true
-                }).map((path, key) => {
-                    return ({
-                        lat: Movements.metadata[path[0]].lat,
-                        lng: Movements.metadata[path[0]].lng
-                    },
-                    {
-                        lat: Movements.metadata[path[1]].lat,
-                        lng: Movements.metadata[path[1]].lng
-                    })
-                })}
-                options={saxPolygonOption}
-            />
-            {
-                vectorsEqual(drumVector, saxVector) === false ?
-                    Array.isArray(drumVector) === true ?
-                        <Polyline
-                            path={getCoordinates(drumVector)}
-                            options={drumPolyline}
+            /> */}
 
-                        /> : null
-                    : null
+
+            {
+
+                Array.isArray(drumVector) === true ?
+                    <Polyline
+                        path={getCoordinates(drumVector)}
+                        options={drumPolyline}
+
+                    /> : null
+
             }
             {
-                vectorsEqual(drumVector, saxVector) === false ?
-                    Array.isArray(saxVector) === true ?
-                        <Polyline
-                            path={getCoordinates(saxVector)}
-                            options={saxPolyline}
 
-                        /> : null
-                    : null
-            }
-            {
-                vectorsEqual(drumVector, saxVector) === true ?
+                Array.isArray(saxVector) === true ?
                     <Polyline
                         path={getCoordinates(saxVector)}
-                        options={asyncTownPolyline}
+                        options={saxPolyline}
+
+                    /> : null
+
+            }
+            {
+                Array.isArray(duoVector) === true ?
+                    <Polyline
+                        path={getCoordinates(duoVector)}
+                        options={duoPolyline}
                     />
                     : null
             }

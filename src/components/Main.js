@@ -27,10 +27,12 @@ const Main = () => {
 
     const [currentSaxVector, setCurrentSaxVector] = useState([" ", " "])
     const [currentDrumVector, setCurrentDrumVector] = useState([" ", " "])
+    // const [currentDuoVector, setCurrentDuoVector] = useState([" ", " "])
 
-    function handleTownChange(saxVector, drumVector) {
+    function handleTownChange(saxVector, drumVector, duoVector) {
         setCurrentSaxVector(saxVector === null ? [" ", " "] : [Movements.metadata[saxVector[0]].name, Movements.metadata[saxVector[1]].name]);
         setCurrentDrumVector(drumVector === null ? [" ", " "] : [Movements.metadata[drumVector[0]].name, Movements.metadata[drumVector[1]].name]);
+        // setCurrentDuoVector(duoVector === null ? [" ", " "] : [Movements.metadata[duoVector[0]].name, Movements.metadata[duoVector[1]].name]);
     }
 
     function handleTabChange(index) {
