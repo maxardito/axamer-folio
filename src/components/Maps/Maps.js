@@ -199,15 +199,12 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                                 setInfoWindow(null)
                             }}
                             onClick={() => {
-                                let drumIndex = currentJourney.blueLine.findIndex(function (e) { return e ? e[0] === pin.id : false });
-                                let saxIndex = currentJourney.redLine.findIndex(function (e) { return e ? e[0] === pin.id : false })
-                                let duoIndex = currentJourney.purpleLine.findIndex(function (e) { return e ? e[0] === pin.id : false })
+                                let drumIndex = currentJourney.drumPins.findIndex(function (e) { return e ? e === pin.id : false })
+                                let saxIndex = currentJourney.saxPins.findIndex(function (e) { return e ? e === pin.id : false })
                                 if (drumIndex) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
                                 } else if (saxIndex) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[saxIndex])
-                                } else if (duoIndex) {
-                                    videoRef.current.seekTo(currentJourney.timeStamps[duoIndex])
                                 }
                             }}
                         />
