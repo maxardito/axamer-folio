@@ -22,13 +22,10 @@
 
 .controlPanelBg {
   position: relative;
-  float:right;
-  height: 87vh;
+  float: right;
+  height: 88vh;
   top: 12vh;
-  width: 33.3vw;
-  border: 0.05vw solid rgb(0, 0, 0);
   color: rgb(0, 0, 0);
-  border-bottom: none;
   opacity: 0.9;
   z-index: 1;
   overflow: scroll;
@@ -40,26 +37,29 @@
 .controlPanel {
   position: absolute;
   float: right;
-  height: 87vh;
-  top: 10.2vh;
-  width: 33.3vw;
+  top: 12vh;
+  height: 88vh;
   left: 50%;
   color: rgb(0, 0, 0);
+  border: 0.05px solid black;
+  border-right: none;
   border-bottom: none;
   opacity: 1;
   z-index: 3;
-  overflow: scroll;
+  overflow: none;
   font-size: 1em;
 }
 
 .tab{
-  position: absolute;
-  float: left;
-  top: 1.05vw;
-  width: 50%;
+  left: 0;
+  top: 0;
+  width: 33%;
   padding: 1%;
-  left: 0vw; 
   list-style-type: none;
+  padding-left: 10px;
+  border: 1px solid black;
+  border-left: none;
+  border-top: none;
   &:hover {
     cursor: pointer;
   }
@@ -69,7 +69,7 @@
   position: absolute;
   right: 0;
   height: auto;
-  top: 12vh;
+  top: 0;
   width: 33.3vw;
   border: 0.5vw solid black;
   color: rgb(0, 0, 0);
@@ -93,9 +93,8 @@
   position: relative;
   width: 50vw;
   height: 37vw;
-  top: 5vw;
+  top: 0;
   left: 2vw;
-  border: 0.1vw solid rgb(0, 0, 0);
   margin-bottom: 2vw;
 }
 
