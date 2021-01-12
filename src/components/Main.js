@@ -82,7 +82,7 @@ const Main = () => {
             <div className={Style.controlPanel} style={{
                 width: docMode ? "50vw" : "33.3vw"
             }}>
-                <Tabs style={{ position: "relative", top: "-2.1vh" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
+                <Tabs style={{ position: "relative", top: "-2.1px" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
                     <TabList style={{ top: 0, paddingLeft: 0, display: "flex" }}>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[0] }}><i>FOLIO</i></Tab>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[1] }}><i>NOTES</i></Tab>
@@ -106,9 +106,9 @@ const Main = () => {
                                 onPause={() => { setPolygonOpacity(0.7) }}
                             />
                             <br />
-          Ensemble:<br />
-          Venue:<br />
-          Date:<br /><br />
+          Ensemble: {currentJourney.name}<br />
+          Venue: {currentJourney.venue}<br />
+          Date: {currentJourney.date}<br /><br />
                             <hr /><br />
                             <center>
                                 <span style={{ backgroundColor: "red", color: "white" }}>Saxophone</span>: {currentSaxVector[0]} {"->"} <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentSaxVector[1]}</i><br />
