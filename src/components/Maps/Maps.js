@@ -22,8 +22,8 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
     });
 
     const mapContainerStyle = {
-        width: "99vw",
-        height: "86.5vh",
+        width: "100vw",
+        height: "88vh",
     };
 
     const MAP_BOUNDARIES = {

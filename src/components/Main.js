@@ -59,7 +59,7 @@ const Main = () => {
             <div style={{ position: "relative" }}>
                 <div className={Style.title}>
                     AXAMER FOLIO
-          <img
+                <img
                         src={"/pin.png"}
                         className={Style.ensembleMenuHamburger}
                         alt={"Rainbow Cube"}
@@ -82,11 +82,11 @@ const Main = () => {
             <div className={Style.controlPanel} style={{
                 width: docMode ? "50vw" : "33.3vw"
             }}>
-                <Tabs selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
-                    <TabList>
-                        <Tab className={Style.tab} style={{ float: 'left', left: '0vw', backgroundColor: tabColor[0], paddingLeft: "10px", border: "1px solid black", fontFamily: "Roboto" }}><i>FOLIO</i></Tab>
-                        <Tab className={Style.tab} style={{ float: 'right', left: '33%', backgroundColor: tabColor[1], paddingLeft: "10px", border: "1px solid black", fontFamily: "Roboto" }}><i>NOTES</i></Tab>
-                        <Tab className={Style.tab} style={{ float: 'right', left: '66%', backgroundColor: tabColor[2], paddingLeft: "10px", border: "1px solid black", fontFamily: "Roboto" }}><i>ENSEMBLES</i></Tab>
+                <Tabs style={{ position: "relative", top: "-2.1px" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
+                    <TabList style={{ top: 0, paddingLeft: 0, display: "flex" }}>
+                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[0] }}><i>FOLIO</i></Tab>
+                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[1] }}><i>NOTES</i></Tab>
+                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>ENSEMBLES</i></Tab>
                     </TabList>
 
                     <TabPanel forceRender={true}>
@@ -106,9 +106,9 @@ const Main = () => {
                                 onPause={() => { setPolygonOpacity(0.7) }}
                             />
                             <br />
-          Ensemble:<br />
-          Venue:<br />
-          Date:<br /><br />
+          Ensemble: {currentJourney.name}<br />
+          Venue: {currentJourney.venue}<br />
+          Date: {currentJourney.date}<br /><br />
                             <hr /><br />
                             <center>
                                 <span style={{ backgroundColor: "red", color: "white" }}>Saxophone</span>: {currentSaxVector[0]} {"->"} <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentSaxVector[1]}</i><br />
