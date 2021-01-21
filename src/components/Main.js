@@ -1,15 +1,14 @@
-import React, { useState, createRef } from "react";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import React, { useState, createRef } from "react"
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
-import Style from "./main.module.scss";
-import ReactPlayer from "react-player/lazy";
+import Style from "./main.module.scss"
+import ReactPlayer from "react-player/lazy"
 import Maps from "./Maps/Maps.js"
-import Journeys from "./Journey/Journeys.json";
+import Journeys from "./Journey/Journeys.json"
 import Checkbox from "react-checkbox-component"
-import Movements from "./Movements.json";
-
-//import Rendering from "./Rendering.js";
-
+import Movements from "./Movements.json"
+import ReactMarkdown from 'react-markdown'
+import ProgramNotes from "./ProgramNotes"
 
 const Main = () => {
     const videoRef = createRef()
@@ -27,12 +26,10 @@ const Main = () => {
 
     const [currentSaxVector, setCurrentSaxVector] = useState([" ", " "])
     const [currentDrumVector, setCurrentDrumVector] = useState([" ", " "])
-    // const [currentDuoVector, setCurrentDuoVector] = useState([" ", " "])
 
-    function handleTownChange(saxVector, drumVector, duoVector) {
+    function handleTownChange(saxVector, drumVector) {
         setCurrentSaxVector(saxVector === null ? [" ", " "] : [Movements.metadata[saxVector[0]].name, Movements.metadata[saxVector[1]].name]);
         setCurrentDrumVector(drumVector === null ? [" ", " "] : [Movements.metadata[drumVector[0]].name, Movements.metadata[drumVector[1]].name]);
-        // setCurrentDuoVector(duoVector === null ? [" ", " "] : [Movements.metadata[duoVector[0]].name, Movements.metadata[duoVector[1]].name]);
     }
 
     function handleTabChange(index) {
@@ -89,7 +86,7 @@ const Main = () => {
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>ENSEMBLES</i></Tab>
                     </TabList>
 
-                    <TabPanel forceRender={true}>
+                    <TabPanel>
                         <div className={Style.reactPlayerContainer} style={{
                             width: docMode ? "46vw" : "30vw",
                             height: docMode ? "25.85vw" : "17vw",
@@ -106,23 +103,28 @@ const Main = () => {
                                 onPause={() => { setPolygonOpacity(0.7) }}
                             />
                             <br />
-          Ensemble: {currentJourney.name}<br />
-          Venue: {currentJourney.venue}<br />
-          Date: {currentJourney.date}<br /><br />
+                                Ensemble: {currentJourney.name}<br />
+                                Venue: {currentJourney.venue}<br />
+                                Date: {currentJourney.date}<br /><br />
                             <hr /><br />
                             <center>
-                                <span style={{ backgroundColor: "red", color: "white" }}>Saxophone</span>: {currentSaxVector[0]} {"->"} <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentSaxVector[1]}</i><br />
-                                <span style={{ backgroundColor: "blue", color: "white" }}>Drums</span>: {currentDrumVector[0]} {"->"} <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentDrumVector[1]}</i>
+
+                                {/* TODO: Use react context to refactor everything */}
+                                <VectorDisplay name={"Saxophone"} color={"red"} currentVector={currentSaxVector} />
+                                <br />
+                                <VectorDisplay name={"Drums"} color={"blue"} currentVector={currentDrumVector} />
                             </center>
                         </div>
                     </TabPanel>
 
                     <TabPanel>
-                        Notes
-          </TabPanel>
+                        <div className={Style.programNotesContainer}>
+                            <ReactMarkdown source={ProgramNotes} />
+                        </div>
+                    </TabPanel>
 
                     <TabPanel>
-                        <div className={Style.ensembleMenuPanel}>
+                        <div className={Style.ensembleMenuContainer}>
                             {Journeys.metadata.map((journey, key) => {
                                 return (
                                     <>
@@ -164,5 +166,20 @@ const Main = () => {
         </>
     );
 };
+
+const VectorDisplay = ({ name, color, currentVector }) => {
+    return (
+        <>
+            <span style={{ backgroundColor: color, color: "white" }}>
+                {name}
+            </span>
+                : { currentVector[0]} { "->"}
+            <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+            <i>
+                {currentVector[1]}
+            </i>
+        </>
+    )
+}
 
 export default Main;

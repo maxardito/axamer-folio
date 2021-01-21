@@ -64,18 +64,26 @@
   }
 }
 
-.ensembleMenuPanel {
-  position: absolute;
-  right: 0;
-  height: auto;
-  top: 0;
-  width: 33.3vw;
-  border: 0.5vw solid black;
-  color: rgb(0, 0, 0);
-  z-index: 3;
-  overflow: scroll;
-  font-size: 1em;
-  background: rgb(255, 255, 255);
+.ensembleMenuContainer {
+    position: relative;
+    height: 76vh;
+    right: 0;
+    top: -1.5vh;
+    z-index: 4;
+    overflow: scroll;
+    padding: 2%;
+    color: rgb(0, 0, 0);
+}
+
+.programNotesContainer {
+    position: relative;
+    height: 76vh;
+    right: 0;
+    top: -1.5vh;
+    z-index: 4;
+    overflow: scroll;
+    padding: 2%;
+    color: rgb(0, 0, 0);
 }
 
 .pinTitle{
