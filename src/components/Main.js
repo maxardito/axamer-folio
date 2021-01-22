@@ -76,11 +76,9 @@ const Main = () => {
             <div className={Style.controlPanelBg} style={{
                 width: docMode ? "50vw" : "33.3vw"
             }} />
-            <div className={Style.controlPanel} style={{
-                width: docMode ? "50vw" : "33.3vw"
-            }}>
-                <Tabs style={{ position: "relative", top: "-2.1px" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
-                    <TabList style={{ top: 0, paddingLeft: 0, display: "flex" }}>
+            <div className={Style.controlPanel}>
+                <Tabs style={{ position: "static" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
+                    <TabList style={{ position: "relative", top: 0, paddingLeft: 0, marginTop: 0, display: "flex" }}>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[0] }}><i>FOLIO</i></Tab>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[1] }}><i>NOTES</i></Tab>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>ENSEMBLES</i></Tab>
@@ -103,9 +101,9 @@ const Main = () => {
                                 onPause={() => { setPolygonOpacity(0.7) }}
                             />
                             <br />
-                                Ensemble: {currentJourney.name}<br />
-                                Venue: {currentJourney.venue}<br />
-                                Date: {currentJourney.date}<br /><br />
+                            <b>Ensemble</b>: {currentJourney.name}<br />
+                            <b>Venue</b>: {currentJourney.venue}<br />
+                            <b>Date</b>: {currentJourney.date}<br /><br />
                             <hr /><br />
                             <center>
 

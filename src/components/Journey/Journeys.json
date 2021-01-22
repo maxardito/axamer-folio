@@ -3,8 +3,8 @@
         {
             "id": 0,
             "name": "Patchwork",
-            "venue": "Space",
-            "date": "09/17/20",
+            "venue": "Wild Goose Creative (Columbus, OH)",
+            "date": "08/19/16",
             "videoURL": "https://www.youtube.com/watch?v=P-rt_hj6VAk",
             "videoLength": 1161,
             "blueLine": [
@@ -292,58 +292,6 @@
             ],
             "strokeColor": "#B4005D",
             "fillColor": "blue"
-        },
-        {
-            "id": 2,
-            "name": "Ensemble B",
-            "venue": "Space",
-            "date": "09/17/20",
-            "blueLine": [
-                [
-                    0,
-                    14
-                ],
-                [
-                    14,
-                    19
-                ],
-                [
-                    19,
-                    13
-                ],
-                [
-                    13,
-                    2
-                ]
-            ],
-            "redLine": [
-                null,
-                [
-                    9,
-                    12
-                ],
-                [
-                    12,
-                    13
-                ],
-                [
-                    13,
-                    2
-                ]
-            ],
-            "timeStamps": [
-                0,
-                77,
-                104,
-                176,
-                207,
-                221,
-                245,
-                293,
-                618
-            ],
-            "strokeColor": "#B4005D",
-            "fillColor": "red"
         }
     ]
 }

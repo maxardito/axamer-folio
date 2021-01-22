@@ -40,6 +40,7 @@
   top: 12vh;
   height: 88vh;
   left: 50%;
+  width: 50vw;
   color: rgb(0, 0, 0);
   border: 0.05px solid black;
   border-right: none;
@@ -59,6 +60,7 @@
   padding-left: 10px;
   border: 1px solid black;
   border-left: none;
+  border-top: none;
   &:hover {
     cursor: pointer;
   }
@@ -76,13 +78,13 @@
 }
 
 .programNotesContainer {
-    position: relative;
-    height: 76vh;
+    position: absolute;
+    height: 79vh;
     right: 0;
-    top: -1.5vh;
     z-index: 4;
     overflow: scroll;
-    padding: 2%;
+    padding-left: 2%;
+    padding-right: 2%;
     color: rgb(0, 0, 0);
 }
 
@@ -112,19 +114,6 @@
   top: 20vh;
   left: 52vw;
   background-color: rgb(255, 255, 255);
-}
-
-.scoreWrapper {
-  position: relative;
-  padding-left: 3vw;
-  top: -22vw;
-  text-align: justify;
-}
-
-.rendering {
-  position: fixed;
-  background-color: black;
-  top: 1vw;
 }
 
 /**
