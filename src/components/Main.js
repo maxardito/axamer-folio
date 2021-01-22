@@ -84,7 +84,7 @@ const Main = () => {
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>ENSEMBLES</i></Tab>
                     </TabList>
 
-                    <TabPanel>
+                    <TabPanel forceRender={true} style={{ display: tabIndex !== 0 ? "none" : "block" }}>
                         <div className={Style.reactPlayerContainer} style={{
                             width: docMode ? "46vw" : "30vw",
                             height: docMode ? "25.85vw" : "17vw",
@@ -130,28 +130,19 @@ const Main = () => {
                                             size="big"
                                             isChecked={visible[key]}
                                             onChange={() => {
-                                                if (docMode) {
-                                                    let nextArray = visible.slice();
+                                                let nextArray = visible.slice();
 
-                                                    for (var i = 0; i < visible.length; i++) {
-                                                        if (i !== key)
-                                                            nextArray[i] = false;
-                                                        else
-                                                            nextArray[i] = true;
-                                                    }
-                                                    setCurrentJourney(Journeys.metadata[key]);
-                                                    setVisible(nextArray);
-                                                } else {
-                                                    let v = visible[key];
-
-                                                    let nextArray = visible.slice();
-                                                    nextArray[key] = !v;
-
-                                                    setVisible(nextArray);
+                                                for (var i = 0; i < visible.length; i++) {
+                                                    if (i !== key)
+                                                        nextArray[i] = false;
+                                                    else
+                                                        nextArray[i] = true;
                                                 }
-
+                                                setCurrentJourney(Journeys.metadata[key]);
+                                                setVisible(nextArray);
                                             }}
-                                            color={journey.fillColor} />
+                                            color={journey.fillColor}
+                                        />
                                         {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
                                         <hr />
                                     </>
