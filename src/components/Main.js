@@ -1,15 +1,14 @@
-import React, { useState, createRef } from "react";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import React, { useState, createRef } from "react"
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
-import Style from "./main.module.scss";
-import ReactPlayer from "react-player/lazy";
+import Style from "./main.module.scss"
+import ReactPlayer from "react-player/lazy"
 import Maps from "./Maps/Maps.js"
-import Journeys from "./Journey/Journeys.json";
+import Journeys from "./Journey/Journeys.json"
 import Checkbox from "react-checkbox-component"
-import Movements from "./Movements.json";
-
-//import Rendering from "./Rendering.js";
-
+import Movements from "./Movements.json"
+import ReactMarkdown from 'react-markdown'
+import ProgramNotes from "./ProgramNotes"
 
 const Main = () => {
     const videoRef = createRef()
@@ -27,12 +26,10 @@ const Main = () => {
 
     const [currentSaxVector, setCurrentSaxVector] = useState([" ", " "])
     const [currentDrumVector, setCurrentDrumVector] = useState([" ", " "])
-    // const [currentDuoVector, setCurrentDuoVector] = useState([" ", " "])
 
-    function handleTownChange(saxVector, drumVector, duoVector) {
+    function handleTownChange(saxVector, drumVector) {
         setCurrentSaxVector(saxVector === null ? [" ", " "] : [Movements.metadata[saxVector[0]].name, Movements.metadata[saxVector[1]].name]);
         setCurrentDrumVector(drumVector === null ? [" ", " "] : [Movements.metadata[drumVector[0]].name, Movements.metadata[drumVector[1]].name]);
-        // setCurrentDuoVector(duoVector === null ? [" ", " "] : [Movements.metadata[duoVector[0]].name, Movements.metadata[duoVector[1]].name]);
     }
 
     function handleTabChange(index) {
@@ -79,17 +76,15 @@ const Main = () => {
             <div className={Style.controlPanelBg} style={{
                 width: docMode ? "50vw" : "33.3vw"
             }} />
-            <div className={Style.controlPanel} style={{
-                width: docMode ? "50vw" : "33.3vw"
-            }}>
-                <Tabs style={{ position: "relative", top: "-2.1px" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
-                    <TabList style={{ top: 0, paddingLeft: 0, display: "flex" }}>
+            <div className={Style.controlPanel}>
+                <Tabs style={{ position: "static" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
+                    <TabList style={{ position: "relative", top: 0, paddingLeft: 0, marginTop: 0, display: "flex" }}>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[0] }}><i>FOLIO</i></Tab>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[1] }}><i>NOTES</i></Tab>
                         <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>ENSEMBLES</i></Tab>
                     </TabList>
 
-                    <TabPanel forceRender={true}>
+                    <TabPanel forceRender={true} style={{ display: tabIndex !== 0 ? "none" : "block" }}>
                         <div className={Style.reactPlayerContainer} style={{
                             width: docMode ? "46vw" : "30vw",
                             height: docMode ? "25.85vw" : "17vw",
@@ -106,23 +101,28 @@ const Main = () => {
                                 onPause={() => { setPolygonOpacity(0.7) }}
                             />
                             <br />
-          Ensemble: {currentJourney.name}<br />
-          Venue: {currentJourney.venue}<br />
-          Date: {currentJourney.date}<br /><br />
+                            <b>Ensemble</b>: {currentJourney.name}<br />
+                            <b>Venue</b>: {currentJourney.venue}<br />
+                            <b>Date</b>: {currentJourney.date}<br /><br />
                             <hr /><br />
                             <center>
-                                <span style={{ backgroundColor: "red", color: "white" }}>Saxophone</span>: {currentSaxVector[0]} {"->"} <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentSaxVector[1]}</i><br />
-                                <span style={{ backgroundColor: "blue", color: "white" }}>Drums</span>: {currentDrumVector[0]} {"->"} <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />  <i>{currentDrumVector[1]}</i>
+
+                                {/* TODO: Use react context to refactor everything */}
+                                <VectorDisplay name={"Saxophone"} color={"red"} currentVector={currentSaxVector} />
+                                <br />
+                                <VectorDisplay name={"Drums"} color={"blue"} currentVector={currentDrumVector} />
                             </center>
                         </div>
                     </TabPanel>
 
                     <TabPanel>
-                        Notes
-          </TabPanel>
+                        <div className={Style.programNotesContainer}>
+                            <ReactMarkdown source={ProgramNotes} />
+                        </div>
+                    </TabPanel>
 
                     <TabPanel>
-                        <div className={Style.ensembleMenuPanel}>
+                        <div className={Style.ensembleMenuContainer}>
                             {Journeys.metadata.map((journey, key) => {
                                 return (
                                     <>
@@ -130,28 +130,19 @@ const Main = () => {
                                             size="big"
                                             isChecked={visible[key]}
                                             onChange={() => {
-                                                if (docMode) {
-                                                    let nextArray = visible.slice();
+                                                let nextArray = visible.slice();
 
-                                                    for (var i = 0; i < visible.length; i++) {
-                                                        if (i !== key)
-                                                            nextArray[i] = false;
-                                                        else
-                                                            nextArray[i] = true;
-                                                    }
-                                                    setCurrentJourney(Journeys.metadata[key]);
-                                                    setVisible(nextArray);
-                                                } else {
-                                                    let v = visible[key];
-
-                                                    let nextArray = visible.slice();
-                                                    nextArray[key] = !v;
-
-                                                    setVisible(nextArray);
+                                                for (var i = 0; i < visible.length; i++) {
+                                                    if (i !== key)
+                                                        nextArray[i] = false;
+                                                    else
+                                                        nextArray[i] = true;
                                                 }
-
+                                                setCurrentJourney(Journeys.metadata[key]);
+                                                setVisible(nextArray);
                                             }}
-                                            color={journey.fillColor} />
+                                            color={journey.fillColor}
+                                        />
                                         {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
                                         <hr />
                                     </>
@@ -164,5 +155,20 @@ const Main = () => {
         </>
     );
 };
+
+const VectorDisplay = ({ name, color, currentVector }) => {
+    return (
+        <>
+            <span style={{ backgroundColor: color, color: "white" }}>
+                {name}
+            </span>
+                : { currentVector[0]} { "->"}
+            <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+            <i>
+                {currentVector[1]}
+            </i>
+        </>
+    )
+}
 
 export default Main;

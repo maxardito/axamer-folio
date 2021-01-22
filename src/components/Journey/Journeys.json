@@ -1,10 +1,218 @@
 {
     "metadata": [
         {
-            "id": 0,
+            "id": 1,
+            "name": "Jonathan Hulting-Cohen & Dennis Sullivan",
+            "venue": "Studio Recording",
+            "date": "09/08/20",
+            "videoURL": "https://www.youtube.com/watch?v=3JFbQgrFQD4",
+            "videoLength": 758,
+            "blueLine": [
+                null,
+                [
+                    13,
+                    19
+                ],
+                [
+                    13,
+                    19
+                ],
+                [
+                    13,
+                    19,
+                    2
+                ],
+                [
+                    19,
+                    2,
+                    15
+                ],
+                [
+                    2,
+                    15,
+                    8
+                ],
+                [
+                    15,
+                    8
+                ],
+                [
+                    15,
+                    8,
+                    5
+                ],
+                [
+                    15,
+                    8,
+                    5
+                ],
+                [
+                    15,
+                    8,
+                    5
+                ],
+                [
+                    8,
+                    5
+                ],
+                [
+                    5,
+                    13
+                ],
+                null
+            ],
+            "redLine": [
+                null,
+                [
+                    13,
+                    24
+                ],
+                [
+                    13,
+                    24,
+                    2
+                ],
+                [
+                    13,
+                    24,
+                    2
+                ],
+                [
+                    24,
+                    2,
+                    14
+                ],
+                [
+                    2,
+                    14,
+                    24
+                ],
+                [
+                    2,
+                    14,
+                    24
+                ],
+                [
+                    2,
+                    14,
+                    24
+                ],
+                [
+                    14,
+                    24
+                ],
+                [
+                    14,
+                    24,
+                    5
+                ],
+                [
+                    14,
+                    24,
+                    5
+                ],
+                [
+                    24,
+                    5
+                ],
+                null
+            ],
+            "purpleLine": [
+                [
+                    4,
+                    13
+                ],
+                [
+                    4,
+                    13
+                ],
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                [
+                    5,
+                    13
+                ]
+            ],
+            "polygonDrum": [
+                4,
+                13,
+                19,
+                2,
+                15,
+                8,
+                5,
+                13
+            ],
+            "polygonSax": [
+                4,
+                13,
+                24,
+                2,
+                14,
+                24,
+                5,
+                13
+            ],
+            "drumPins": [
+                4,
+                13,
+                null,
+                19,
+                2,
+                15,
+                null,
+                8,
+                8,
+                8,
+                null,
+                5,
+                13
+            ],
+            "saxPins": [
+                4,
+                13,
+                24,
+                24,
+                2,
+                14,
+                14,
+                14,
+                null,
+                24,
+                24,
+                5,
+                13
+            ],
+            "timeStamps": [
+                0,
+                149,
+                186,
+                204,
+                233,
+                444,
+                483,
+                521,
+                535,
+                539,
+                568,
+                593,
+                720
+            ],
+            "strokeColor": "#B4005D",
+            "fillColor": "blue"
+        },
+        {
+            "id": 1,
             "name": "Patchwork",
-            "venue": "Space",
-            "date": "09/17/20",
+            "venue": "Wild Goose Creative (Columbus, OH)",
+            "date": "08/19/16",
             "videoURL": "https://www.youtube.com/watch?v=P-rt_hj6VAk",
             "videoLength": 1161,
             "blueLine": [
@@ -171,7 +379,7 @@
             ],
             "drumPins": [
                 0,
-                null,
+                0,
                 19,
                 13,
                 3,
@@ -186,7 +394,7 @@
                 11
             ],
             "saxPins": [
-                null,
+                9,
                 9,
                 19,
                 13,
@@ -219,131 +427,6 @@
             ],
             "strokeColor": "orange",
             "fillColor": "yellow"
-        },
-        {
-            "id": 1,
-            "name": "Jonathan Hulting-Cohen & Dennis Sullivan",
-            "venue": "Studio Recording",
-            "date": "09/08/20",
-            "videoURL": "https://www.youtube.com/watch?v=3JFbQgrFQD4",
-            "videoLength": 758,
-            "blueLine": [
-                [
-                    0,
-                    14
-                ],
-                [
-                    14,
-                    19
-                ],
-                [
-                    19,
-                    13
-                ],
-                [
-                    13,
-                    10
-                ]
-            ],
-            "redLine": [
-                null,
-                [
-                    9,
-                    12
-                ],
-                [
-                    12,
-                    13
-                ],
-                [
-                    13,
-                    10
-                ]
-            ],
-            "polygonDrum": [
-                0,
-                19,
-                13,
-                3,
-                13,
-                20,
-                18,
-                15,
-                4,
-                11
-            ],
-            "polygonSax": [
-                9,
-                13,
-                3,
-                13,
-                20,
-                7,
-                25,
-                14,
-                4,
-                11
-            ],
-            "timeStamps": [
-                0,
-                77,
-                104,
-                176
-            ],
-            "strokeColor": "#B4005D",
-            "fillColor": "blue"
-        },
-        {
-            "id": 2,
-            "name": "Ensemble B",
-            "venue": "Space",
-            "date": "09/17/20",
-            "blueLine": [
-                [
-                    0,
-                    14
-                ],
-                [
-                    14,
-                    19
-                ],
-                [
-                    19,
-                    13
-                ],
-                [
-                    13,
-                    2
-                ]
-            ],
-            "redLine": [
-                null,
-                [
-                    9,
-                    12
-                ],
-                [
-                    12,
-                    13
-                ],
-                [
-                    13,
-                    2
-                ]
-            ],
-            "timeStamps": [
-                0,
-                77,
-                104,
-                176,
-                207,
-                221,
-                245,
-                293,
-                618
-            ],
-            "strokeColor": "#B4005D",
-            "fillColor": "red"
         }
     ]
 }
