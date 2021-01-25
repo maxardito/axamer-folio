@@ -77,9 +77,7 @@ const Main = () => {
                     </center>
                 </div>
             </div>
-            <div className={Style.reactPlayerOpacityOverride}
-                style={{ visibility: videoVisibility }}
-            />
+
             <div className={Style.controlPanelBg} style={{
                 width: docMode ? "50vw" : "33.3vw"
             }} />
@@ -106,6 +104,7 @@ const Main = () => {
                                 height="100%"
                                 onPlay={() => { setPolygonOpacity(0) }}
                                 onPause={() => { setPolygonOpacity(0.7) }}
+                                style={{ backgroundColor: "white" }}
                             />
                             <br />
                             <b>Ensemble</b>: {currentJourney.name}<br />
