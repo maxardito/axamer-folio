@@ -67,6 +67,16 @@ const Main = () => {
                     polygonOpacity={polygonOpacity}
                 />
             </div>
+            <div className={Style.mobileWarning}>
+                <div style={{ position: "relative", top: "15vw", padding: "1%" }}>
+                    <center>
+                        <h2>Axamer Folio</h2>
+                        <h3>by Eric Wubbels</h3>
+                            ---
+                        <h4>For the full experience, please load the site on a desktop or laptop computer</h4>
+                    </center>
+                </div>
+            </div>
             <div className={Style.reactPlayerOpacityOverride}
                 style={{ visibility: videoVisibility }}
             />
@@ -101,7 +111,9 @@ const Main = () => {
                             <b>Ensemble</b>: {currentJourney.name}<br />
                             <b>Venue</b>: {currentJourney.venue}<br />
                             <b>Date</b>: {currentJourney.date}<br /><br />
-                            <hr /><br />
+                            <img src="border.svg" alt={"Border"} width={"100%"} />
+                            <br />
+                            <br />
                             <center>
 
                                 {/* TODO: Use react context to refactor everything */}

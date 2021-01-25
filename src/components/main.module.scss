@@ -8,7 +8,10 @@
   width: 98vw;
   z-index: 1;
   border-bottom: 1px solid black;
-
+  @media only screen and (max-width: 767px) {
+    font-size: 8vw;
+    height: 9vw;
+  }
   // Gradients
   background: rgb(255, 255, 255);
 }
@@ -18,6 +21,24 @@
   width: 10vh;
   padding-right: 1vw;
   padding-top: 0.5vw;
+  @media only screen and (max-width: 767px) {
+    width: 8vw;
+  }
+}
+
+.mobileWarning {
+    display: none;
+    @media only screen and (max-width: 767px) {
+        display: inline;
+        border-top: 1px solid black;
+        background: rgb(233, 233, 255);
+        top: 8vh;
+        width: 100vw;
+        height: 100vh;
+        float: left;
+        z-index: 5;
+        left: 0;
+      }
 }
 
 .controlPanelBg {
@@ -31,6 +52,9 @@
   overflow: scroll;
   font-size: 1em;
   background: rgb(233, 233, 255);
+  @media only screen and (max-width: 767px) {
+      display: none;
+  }
 }
 
 
@@ -47,8 +71,11 @@
   border-bottom: none;
   opacity: 1;
   z-index: 3;
-  overflow: none;
+  overflow: scroll;
   font-size: 1em;
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
 }
 
 .tab{
@@ -114,6 +141,9 @@
   top: 20vh;
   left: 52vw;
   background-color: rgb(255, 255, 255);
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
 }
 
 /**
