@@ -50,9 +50,6 @@ const Main = () => {
 
     return (
         <>
-            {/*<div className={Style.rendering}>
-        <Rendering />
-      </div>*/}
             <div style={{ position: "relative" }}>
                 <div className={Style.title}>
                     AXAMER FOLIO
@@ -108,9 +105,15 @@ const Main = () => {
                             <center>
 
                                 {/* TODO: Use react context to refactor everything */}
-                                <VectorDisplay name={"Saxophone"} color={"red"} currentVector={currentSaxVector} />
+                                <VectorDisplay name={"Saxophone"} color={"red"}
+                                    currentTown={currentJourney.saxPins[currentJourney.redLine.indexOf(currentSaxVector)]}
+                                    nextTown={currentJourney.saxPins[currentJourney.redLine.indexOf(currentSaxVector + 1)]}
+                                />
                                 <br />
-                                <VectorDisplay name={"Drums"} color={"blue"} currentVector={currentDrumVector} />
+                                <VectorDisplay name={"Drums"} color={"blue"}
+                                    currentTown={currentJourney.saxPins[currentJourney.redLine.indexOf(currentDrumVector)]}
+                                    nextTown={currentJourney.saxPins[currentJourney.redLine.indexOf(currentDrumVector + 1)]}
+                                />
                             </center>
                         </div>
                     </TabPanel>
@@ -125,7 +128,7 @@ const Main = () => {
                         <div className={Style.ensembleMenuContainer}>
                             {Journeys.metadata.map((journey, key) => {
                                 return (
-                                    <>
+                                    <div key={key}>
                                         <Checkbox
                                             size="big"
                                             isChecked={visible[key]}
@@ -145,7 +148,7 @@ const Main = () => {
                                         />
                                         {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
                                         <hr />
-                                    </>
+                                    </div>
                                 )
                             })}
                         </div>
@@ -156,16 +159,17 @@ const Main = () => {
     );
 };
 
-const VectorDisplay = ({ name, color, currentVector }) => {
+const VectorDisplay = ({ name, color, currentTown, nextTown }) => {
     return (
         <>
-            <span style={{ backgroundColor: color, color: "white" }}>
+            <br />
+            <span style={{ backgroundColor: color, padding: "3px", color: "white" }}>
                 {name}
             </span>
-                : { currentVector[0]} { "->"}
+                : {currentTown} { "->"}
             <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
             <i>
-                {currentVector[1]}
+                {nextTown}
             </i>
         </>
     )
