@@ -201,10 +201,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                             onClick={() => {
                                 let drumIndex = currentJourney.drumPins.findIndex(function (e) { return e ? e === pin.id : false })
                                 let saxIndex = currentJourney.saxPins.findIndex(function (e) { return e ? e === pin.id : false })
-                                if (drumIndex) {
+                                console.log(saxIndex)
+                                if (saxIndex === -1) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
-                                } else if (saxIndex) {
+                                } else if (drumIndex === -1) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[saxIndex])
+                                } else {
+                                    videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
                                 }
                             }}
                         />
