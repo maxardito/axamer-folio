@@ -104,6 +104,15 @@
     color: rgb(0, 0, 0);
 }
 
+.ensembleLink {
+    text-decoration: none;
+    color: black;
+    &:hover {
+        color: gray;
+        transition: 0.2s;
+    }
+}
+
 .programNotesContainer {
     position: absolute;
     height: 79vh;
@@ -115,7 +124,7 @@
     color: rgb(0, 0, 0);
 }
 
-.pinTitle{
+.pinTitle {
   position: absolute;
   background-color: white;
   top: 8vw;
@@ -132,6 +141,9 @@
   top: 0;
   left: 2vw;
   margin-bottom: 2vw;
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
 }
 
 /**

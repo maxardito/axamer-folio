@@ -1,5 +1,7 @@
 const ProgramNotes = `
 # Axamer Folio [2015]
+**by Eric Wubbels**
+
 _for saxophone and drumset_
 
 Axamer Folio is a modular network of 24 pieces for saxophone and drumset, with no pre-set order,
