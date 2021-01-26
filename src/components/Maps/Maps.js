@@ -14,7 +14,7 @@ import Style from "./maps.module.scss";
 
 const libraries = [null];
 
-const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMode, polygonOpacity }) => {
+const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity }) => {
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -168,16 +168,16 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                 {/** Journeys (renditions) by different ensembles */}
                 {Journeys.metadata.map((journey, key) => {
                     return <Journey
-                        visible={journeyVisibility[key]}
+                        visible={currentJourney.id === journey.id ? true : false}
                         drumSequence={journey.polygonDrum}
                         saxSequence={journey.polygonSax}
                         strokeColor={journey.strokeColor}
                         fillColor={docMode ? "2A2321" : journey.fillColor}
-                        key={key}
                         drumVector={drumVector}
                         saxVector={saxVector}
                         duoVector={duoVector}
                         polygonOpacity={polygonOpacity}
+                        key={key}
                     />
                 })}
 
@@ -201,10 +201,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, journeyVisibility, docMo
                             onClick={() => {
                                 let drumIndex = currentJourney.drumPins.findIndex(function (e) { return e ? e === pin.id : false })
                                 let saxIndex = currentJourney.saxPins.findIndex(function (e) { return e ? e === pin.id : false })
-                                if (drumIndex) {
+                                console.log(saxIndex)
+                                if (saxIndex === -1) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
-                                } else if (saxIndex) {
+                                } else if (drumIndex === -1) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[saxIndex])
+                                } else {
+                                    videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
                                 }
                             }}
                         />

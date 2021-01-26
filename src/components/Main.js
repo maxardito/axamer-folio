@@ -1,5 +1,6 @@
 import React, { useState, createRef } from "react"
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { Link } from "react-router-dom"
 
 import Style from "./main.module.scss"
 import ReactPlayer from "react-player/lazy"
@@ -10,12 +11,10 @@ import Movements from "./Movements.json"
 import ReactMarkdown from 'react-markdown'
 import ProgramNotes from "./ProgramNotes"
 
-const Main = () => {
+const Main = ({ metadata }) => {
     const videoRef = createRef()
 
-    const [visible, setVisible] = useState([true, false, false])
     const [docMode] = useState(true);
-    const [currentJourney, setCurrentJourney] = useState(Journeys.metadata[0]);
 
     const [tabIndex, setTabIndex] = useState(0);
     const [tabColor, setTabColor] = useState(['blue', 'white', 'white']);
@@ -50,9 +49,6 @@ const Main = () => {
 
     return (
         <>
-            {/*<div className={Style.rendering}>
-        <Rendering />
-      </div>*/}
             <div style={{ position: "relative" }}>
                 <div className={Style.title}>
                     AXAMER FOLIO
@@ -63,16 +59,23 @@ const Main = () => {
                     />
                 </div>
                 <Maps videoRef={videoRef}
-                    currentJourney={currentJourney}
+                    currentJourney={metadata}
                     onTownChange={handleTownChange}
-                    journeyVisibility={visible}
                     docMode={docMode}
                     polygonOpacity={polygonOpacity}
                 />
             </div>
-            <div className={Style.reactPlayerOpacityOverride}
-                style={{ visibility: videoVisibility }}
-            />
+            <div className={Style.mobileWarning}>
+                <div style={{ position: "relative", top: "15vw", padding: "1%" }}>
+                    <center>
+                        <h2>Axamer Folio</h2>
+                        <h3>by Eric Wubbels</h3>
+                            ---
+                        <h4>For the full experience, please load the site on a desktop or laptop computer</h4>
+                    </center>
+                </div>
+            </div>
+
             <div className={Style.controlPanelBg} style={{
                 width: docMode ? "50vw" : "33.3vw"
             }} />
@@ -92,25 +95,34 @@ const Main = () => {
                         }}>
                             <ReactPlayer
                                 ref={videoRef}
-                                url={currentJourney.videoURL}
-                                playing={true}
+                                url={metadata.videoURL}
+                                playing={window.innerWidth <= 767 ? false : true}
                                 controls={true}
                                 width="100%"
                                 height="100%"
                                 onPlay={() => { setPolygonOpacity(0) }}
                                 onPause={() => { setPolygonOpacity(0.7) }}
+                                style={{ backgroundColor: "white" }}
                             />
                             <br />
-                            <b>Ensemble</b>: {currentJourney.name}<br />
-                            <b>Venue</b>: {currentJourney.venue}<br />
-                            <b>Date</b>: {currentJourney.date}<br /><br />
-                            <hr /><br />
+                            <b>Ensemble</b>: {metadata.name}<br />
+                            <b>Venue</b>: {metadata.venue}<br />
+                            <b>Date</b>: {metadata.date}<br /><br />
+                            <img src="border.svg" alt={"Border"} width={"100%"} />
+                            <br />
+                            <br />
                             <center>
 
                                 {/* TODO: Use react context to refactor everything */}
-                                <VectorDisplay name={"Saxophone"} color={"red"} currentVector={currentSaxVector} />
+                                <VectorDisplay name={"Saxophone"} color={"red"}
+                                    currentTown={metadata.saxPins[metadata.redLine.indexOf(currentSaxVector)]}
+                                    nextTown={metadata.saxPins[metadata.redLine.indexOf(currentSaxVector + 1)]}
+                                />
                                 <br />
-                                <VectorDisplay name={"Drums"} color={"blue"} currentVector={currentDrumVector} />
+                                <VectorDisplay name={"Drums"} color={"blue"}
+                                    currentTown={metadata.saxPins[metadata.redLine.indexOf(currentDrumVector)]}
+                                    nextTown={metadata.saxPins[metadata.redLine.indexOf(currentDrumVector + 1)]}
+                                />
                             </center>
                         </div>
                     </TabPanel>
@@ -126,25 +138,15 @@ const Main = () => {
                             {Journeys.metadata.map((journey, key) => {
                                 return (
                                     <>
-                                        <Checkbox
-                                            size="big"
-                                            isChecked={visible[key]}
-                                            onChange={() => {
-                                                let nextArray = visible.slice();
-
-                                                for (var i = 0; i < visible.length; i++) {
-                                                    if (i !== key)
-                                                        nextArray[i] = false;
-                                                    else
-                                                        nextArray[i] = true;
-                                                }
-                                                setCurrentJourney(Journeys.metadata[key]);
-                                                setVisible(nextArray);
-                                            }}
-                                            color={journey.fillColor}
-                                        />
-                                        {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
-                                        <hr />
+                                        <Link to={journey.slug} key={key} className={Style.ensembleLink}>
+                                            <Checkbox
+                                                size="big"
+                                                isChecked={true}
+                                                color={journey.fillColor}
+                                            />
+                                            {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
+                                        </Link>
+                                        <img src="border.svg" alt={"Border"} width={"100%"} />
                                     </>
                                 )
                             })}
@@ -156,16 +158,17 @@ const Main = () => {
     );
 };
 
-const VectorDisplay = ({ name, color, currentVector }) => {
+const VectorDisplay = ({ name, color, currentTown, nextTown }) => {
     return (
         <>
-            <span style={{ backgroundColor: color, color: "white" }}>
+            <br />
+            <span style={{ backgroundColor: color, padding: "3px", color: "white" }}>
                 {name}
             </span>
-                : { currentVector[0]} { "->"}
+                : {currentTown} { "->"}
             <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
             <i>
-                {currentVector[1]}
+                {nextTown}
             </i>
         </>
     )
