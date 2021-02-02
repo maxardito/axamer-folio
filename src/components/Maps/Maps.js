@@ -94,9 +94,14 @@ const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity 
             setDuoVector(currentJourney.purpleLine[currentIndex]);
             setDrumPin(currentJourney.drumPins[currentIndex])
             setSaxPin(currentJourney.saxPins[currentIndex])
-            onTownChange(currentJourney.redLine[currentIndex],
-                currentJourney.blueLine[currentIndex],
-                currentJourney.purpleLine[currentIndex]);
+
+            if (currentJourney.saxPins.length === currentIndex + 1) {
+                onTownChange(currentJourney.saxPins[currentIndex], null,
+                    currentJourney.drumPins[currentIndex], null);
+            } else {
+                onTownChange(currentJourney.saxPins[currentIndex], currentJourney.saxPins[currentIndex + 1],
+                    currentJourney.drumPins[currentIndex], currentJourney.drumPins[currentIndex + 1]);
+            }
         }
 
         const interval = setInterval(() => {
@@ -119,9 +124,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity 
                         setDrumPin(currentJourney.drumPins[i])
                         setSaxPin(currentJourney.saxPins[i])
 
-                        onTownChange(currentJourney.redLine[i],
-                            currentJourney.blueLine[i],
-                            currentJourney.purpleLine[i]);
+                        if (currentJourney.saxPins.length === i + 1) {
+                            onTownChange(currentJourney.saxPins[i], null,
+                                currentJourney.drumPins[i], null);
+                        } else {
+                            onTownChange(currentJourney.saxPins[i], currentJourney.saxPins[i + 1],
+                                currentJourney.drumPins[i], currentJourney.drumPins[i + 1]);
+                        }
                         setCenter(DEFAULT_CENTER)
                     }
 
@@ -133,9 +142,13 @@ const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity 
                         setDrumPin(currentJourney.drumPins[i])
                         setSaxPin(currentJourney.saxPins[i])
 
-                        onTownChange(currentJourney.redLine[i],
-                            currentJourney.blueLine[i],
-                            currentJourney.purpleLine[i]);
+                        if (currentJourney.saxPins.length === i + 1) {
+                            onTownChange(currentJourney.saxPins[i], null,
+                                currentJourney.drumPins[i], null);
+                        } else {
+                            onTownChange(currentJourney.saxPins[i], currentJourney.saxPins[i + 1],
+                                currentJourney.drumPins[i], currentJourney.drumPins[i + 1]);
+                        }
                         setJourneyRef(currentJourney)
                         setCenter(DEFAULT_CENTER)
                     }
@@ -201,7 +214,6 @@ const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity 
                             onClick={() => {
                                 let drumIndex = currentJourney.drumPins.findIndex(function (e) { return e ? e === pin.id : false })
                                 let saxIndex = currentJourney.saxPins.findIndex(function (e) { return e ? e === pin.id : false })
-                                console.log(saxIndex)
                                 if (saxIndex === -1) {
                                     videoRef.current.seekTo(currentJourney.timeStamps[drumIndex])
                                 } else if (drumIndex === -1) {

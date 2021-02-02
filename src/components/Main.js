@@ -26,9 +26,9 @@ const Main = ({ metadata }) => {
     const [currentSaxVector, setCurrentSaxVector] = useState([" ", " "])
     const [currentDrumVector, setCurrentDrumVector] = useState([" ", " "])
 
-    function handleTownChange(saxVector, drumVector) {
-        setCurrentSaxVector(saxVector === null ? [" ", " "] : [Movements.metadata[saxVector[0]].name, Movements.metadata[saxVector[1]].name]);
-        setCurrentDrumVector(drumVector === null ? [" ", " "] : [Movements.metadata[drumVector[0]].name, Movements.metadata[drumVector[1]].name]);
+    function handleTownChange(currentSaxTown, nextSaxTown, currentDrumTown, nextDrumTown) {
+        setCurrentSaxVector([currentSaxTown !== null ? Movements.metadata[currentSaxTown].name : null, nextSaxTown !== null ? Movements.metadata[nextSaxTown].name : null]);
+        setCurrentDrumVector([currentDrumTown !== null ? Movements.metadata[currentDrumTown].name : null, nextDrumTown !== null ? Movements.metadata[nextDrumTown].name : null]);
     }
 
     function handleTabChange(index) {
@@ -115,13 +115,13 @@ const Main = ({ metadata }) => {
 
                                 {/* TODO: Use react context to refactor everything */}
                                 <VectorDisplay name={"Saxophone"} color={"red"}
-                                    currentTown={metadata.saxPins[metadata.redLine.indexOf(currentSaxVector)]}
-                                    nextTown={metadata.saxPins[metadata.redLine.indexOf(currentSaxVector + 1)]}
+                                    currentTown={currentSaxVector[0]}
+                                    nextTown={currentSaxVector[1]}
                                 />
                                 <br />
                                 <VectorDisplay name={"Drums"} color={"blue"}
-                                    currentTown={metadata.saxPins[metadata.redLine.indexOf(currentDrumVector)]}
-                                    nextTown={metadata.saxPins[metadata.redLine.indexOf(currentDrumVector + 1)]}
+                                    currentTown={currentDrumVector[0]}
+                                    nextTown={currentDrumVector[1]}
                                 />
                             </center>
                         </div>
@@ -159,19 +159,47 @@ const Main = ({ metadata }) => {
 };
 
 const VectorDisplay = ({ name, color, currentTown, nextTown }) => {
-    return (
-        <>
-            <br />
-            <span style={{ backgroundColor: color, padding: "3px", color: "white" }}>
-                {name}
-            </span>
-                : {currentTown} { "->"}
-            <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
-            <i>
-                {nextTown}
-            </i>
-        </>
-    )
+    if (currentTown === null) {
+        return (
+            <>
+                <br />
+                <span style={{ backgroundColor: color, padding: "3px", color: "white" }}>
+                    {name}
+                </span>
+                    :
+                {" " + nextTown + " "}
+                <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+            </>
+        )
+    } else if (nextTown === null) {
+        return (
+            <>
+                <br />
+                <span style={{ backgroundColor: color, padding: "3px", color: "white" }}>
+                    {name}
+                </span>
+                    :
+                {" " + currentTown + " "}
+                <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+            </>
+        )
+    } else {
+        return (
+            <>
+                <br />
+                <span style={{ backgroundColor: color, padding: "3px", color: "white" }}>
+                    {name}
+                </span>
+                    :
+                {" " + currentTown + " "}
+                <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+                { "->"}
+                <i>
+                    {nextTown}
+                </i>
+            </>
+        )
+    }
 }
 
 export default Main;
