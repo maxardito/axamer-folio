@@ -10,6 +10,8 @@ import Checkbox from "react-checkbox-component"
 import Movements from "./Movements.json"
 import ReactMarkdown from 'react-markdown'
 import ProgramNotes from "./ProgramNotes"
+import ScoreLinks from "./ScoreLinks"
+
 
 const Main = ({ metadata }) => {
     const videoRef = createRef()
@@ -25,6 +27,8 @@ const Main = ({ metadata }) => {
 
     const [currentSaxVector, setCurrentSaxVector] = useState([" ", " "])
     const [currentDrumVector, setCurrentDrumVector] = useState([" ", " "])
+
+    const [ensembleMenu, setEnsembleMenu] = useState(false);
 
     function handleTownChange(currentSaxTown, nextSaxTown, currentDrumTown, nextDrumTown) {
         setCurrentSaxVector([currentSaxTown !== null ? Movements.metadata[currentSaxTown].name : null, nextSaxTown !== null ? Movements.metadata[nextSaxTown].name : null]);
@@ -52,10 +56,11 @@ const Main = ({ metadata }) => {
             <div style={{ position: "relative" }}>
                 <div className={Style.title}>
                     AXAMER FOLIO
-                <img
+                    <img
                         src={"/pin.png"}
                         className={Style.ensembleMenuHamburger}
                         alt={"Rainbow Cube"}
+                        onClick={() => setEnsembleMenu(!ensembleMenu)}
                     />
                 </div>
                 <Maps videoRef={videoRef}
@@ -81,10 +86,10 @@ const Main = ({ metadata }) => {
             }} />
             <div className={Style.controlPanel}>
                 <Tabs style={{ position: "static" }} selectedIndex={tabIndex} onSelect={index => handleTabChange(index)}>
-                    <TabList style={{ position: "relative", top: 0, paddingLeft: 0, marginTop: 0, display: "flex" }}>
-                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[0] }}><i>FOLIO</i></Tab>
-                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[1] }}><i>NOTES</i></Tab>
-                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>ENSEMBLES</i></Tab>
+                    <TabList style={{ position: "relative", right: "1px", top: 0, paddingLeft: 0, marginTop: 0, display: "flex" }}>
+                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[0] }}><i>VIDEO</i></Tab>
+                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[1] }}><i>ABOUT</i></Tab>
+                        <Tab className={Style.tab} style={{ backgroundColor: tabColor[2] }}><i>SCORES</i></Tab>
                     </TabList>
 
                     <TabPanel forceRender={true} style={{ display: tabIndex !== 0 ? "none" : "block" }}>
@@ -112,8 +117,6 @@ const Main = ({ metadata }) => {
                             <br />
                             <br />
                             <center>
-
-                                {/* TODO: Use react context to refactor everything */}
                                 <VectorDisplay name={"Saxophone"} color={"red"}
                                     currentTown={currentSaxVector[0]}
                                     nextTown={currentSaxVector[1]}
@@ -128,31 +131,35 @@ const Main = ({ metadata }) => {
                     </TabPanel>
 
                     <TabPanel>
-                        <div className={Style.programNotesContainer}>
+                        <div className={Style.programNotesContainer} style={{ display: tabIndex !== 1 ? "none" : "block" }}>
                             <ReactMarkdown source={ProgramNotes} />
                         </div>
                     </TabPanel>
 
                     <TabPanel>
-                        <div className={Style.ensembleMenuContainer}>
-                            {Journeys.metadata.map((journey, key) => {
-                                return (
-                                    <>
-                                        <Link to={journey.slug} key={key} className={Style.ensembleLink}>
-                                            <Checkbox
-                                                size="big"
-                                                isChecked={true}
-                                                color={journey.fillColor}
-                                            />
-                                            {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
-                                        </Link>
-                                        <img src="border.svg" alt={"Border"} width={"100%"} />
-                                    </>
-                                )
-                            })}
+                        <div className={Style.programNotesContainer} style={{ display: tabIndex !== 2 ? "none" : "block" }}>
+                            <ReactMarkdown source={ScoreLinks} />
                         </div>
                     </TabPanel>
                 </Tabs>
+                {/** Ensemble dropdown menu */}
+                <div className={Style.ensembleMenuContainer} style={{ visibility: ensembleMenu ? "visible" : "hidden" }}>
+                    {Journeys.metadata.map((journey, key) => {
+                        return (
+                            <div key={key}>
+                                {key !== 0 ? <img src="border-white.svg" alt={"Border"} width={"100%"} /> : null}
+                                <Link to={journey.slug} className={Style.ensembleLink}>
+                                    <Checkbox
+                                        size="big"
+                                        isChecked={true}
+                                        color={journey.fillColor}
+                                    />
+                                    {" "}{journey.name.toLowerCase()} :: {journey.venue.toLowerCase()} :: {journey.date}
+                                </Link>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </>
     );
