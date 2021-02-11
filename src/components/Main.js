@@ -175,7 +175,7 @@ const VectorDisplay = ({ name, color, currentTown, nextTown }) => {
                 </span>
                     :
                 {" " + nextTown + " "}
-                <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+                <img src={name === "Saxophone" ? '/sax-pin.svg' : '/drum-pin.svg'} width={"18px"} height={"auto"} alt={"Map Icon"} />
             </>
         )
     } else if (nextTown === null) {
@@ -187,7 +187,7 @@ const VectorDisplay = ({ name, color, currentTown, nextTown }) => {
                 </span>
                     :
                 {" " + currentTown + " "}
-                <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+                <img src={name === "Saxophone" ? '/sax-pin.svg' : '/drum-pin.svg'} width={"18px"} height={"auto"} alt={"Map Icon"} />
             </>
         )
     } else {
@@ -199,7 +199,7 @@ const VectorDisplay = ({ name, color, currentTown, nextTown }) => {
                 </span>
                     :
                 {" " + currentTown + " "}
-                <img src={"/pin.png"} width={"18px"} height={"auto"} alt={"Map Icon"} />
+                <img src={name === "Saxophone" ? '/sax-pin.svg' : '/drum-pin.svg'} width={"18px"} height={"auto"} alt={"Map Icon"} />
                 { "->"}
                 <i>
                     {nextTown}

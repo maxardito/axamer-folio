@@ -53,23 +53,20 @@ const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity 
         backgroundColor: 1
     };
 
-    const [pinPng, setPinPng] = useState('/pin.png')
+    const [pinPng, setPinPng] = useState(true)
     const [center, setCenter] = useState(DEFAULT_CENTER);
 
     function getPinIcon(pin) {
-        if (docMode) {
-            if ((drumVector && (drumPin !== null) ? Movements.metadata[drumPin].id : false) === pin.id) {
-                return pinPng;
-            } else if ((saxVector && (saxPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) {
-                return pinPng
-            } else if ((duoVector && (saxPin && drumPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) {
-                return pinPng
-            } else {
-                return '/dot.png'
-            }
-        } else {
+        if (((drumVector && (drumPin !== null) ? Movements.metadata[drumPin].id : false) === pin.id) && pinPng) {
+            return '/drum-pin.svg';
+        } else if (((saxVector && (saxPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) && pinPng) {
+            return '/sax-pin.svg'
+        } else if (((duoVector && (saxPin && drumPin !== null) ? Movements.metadata[saxPin].id : false) === pin.id) && pinPng) {
             return '/pin.png'
+        } else {
+            return '/dot.png'
         }
+
     }
 
     const [drumVector, setDrumVector] = useState(null);
@@ -158,7 +155,7 @@ const Maps = ({ videoRef, currentJourney, onTownChange, docMode, polygonOpacity 
             /**
              *  telnet towel blinkenpin.nl
              * */
-            setPinPng(pinGate ? '/pin.png' : '/dot.png')
+            setPinPng(pinGate ? true : false)
             pinGate = !pinGate;
 
         }, 500);
