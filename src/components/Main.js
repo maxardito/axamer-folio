@@ -137,7 +137,7 @@ const Main = ({ metadata }) => {
                     </TabPanel>
 
                     <TabPanel>
-                        <div className={Style.programNotesContainer} style={{ display: tabIndex !== 2 ? "none" : "block" }}>
+                        <div className={Style.scoreLinkContainer} style={{ display: tabIndex !== 2 ? "none" : "block" }}>
                             <ReactMarkdown source={ScoreLinks} />
                         </div>
                     </TabPanel>

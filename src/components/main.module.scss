@@ -131,6 +131,22 @@
     color: rgb(0, 0, 0);
 }
 
+.scoreLinkContainer {
+    position: relative;
+    height: 79vh;
+    right: 0;
+    z-index: 4;
+    overflow: scroll;
+    padding-left: 2%;
+    padding-right: 2%;
+    color: rgb(0, 0, 0);
+    a:visited { 
+        color: blue;
+        text-decoration: none; 
+    }
+
+}
+
 .pinTitle {
   position: absolute;
   background-color: white;
