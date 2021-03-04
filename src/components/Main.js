@@ -30,6 +30,17 @@ const Main = ({ metadata }) => {
 
     const [ensembleMenu, setEnsembleMenu] = useState(false);
 
+    const exampleScores = [
+        ["ALDRANS", "/score/ALDRANS.pdf"],
+        ["ARZL / THAUR / RINN", "/score/ART.pdf"],
+        ["BIRGITZ", "/score/BIRGITZ.pdf"],
+        ["IGLS", "/score/IGLS.pdf"],
+        ["KÜHTAI", "/score/KUHTAI.pdf"],
+        ["LANS", "/score/LANS.pdf"],
+        ["RAITIS", "/score/RAITIS.pdf"],
+        ["VÖLS", "/score/VÖLS.pdf"],
+    ]
+
     function handleTownChange(currentSaxTown, nextSaxTown, currentDrumTown, nextDrumTown) {
         setCurrentSaxVector([currentSaxTown !== null ? Movements.metadata[currentSaxTown].name : null, nextSaxTown !== null ? Movements.metadata[nextSaxTown].name : null]);
         setCurrentDrumVector([currentDrumTown !== null ? Movements.metadata[currentDrumTown].name : null, nextDrumTown !== null ? Movements.metadata[nextDrumTown].name : null]);
@@ -139,7 +150,17 @@ const Main = ({ metadata }) => {
                     <TabPanel>
                         <div className={Style.scoreLinkContainer} style={{ display: tabIndex !== 2 ? "none" : "block" }}>
                             <ReactMarkdown source={ScoreLinks} />
+                            {exampleScores.map((score, key) => {
+                                return (
+                                    <>
+                                        <a href={score[1]} target="_blank" rel="noopener noreferrer">{score[0]}</a>
+                                        <br />
+                                        <br />
+                                    </>
+                                )
+                            })}
                         </div>
+
                     </TabPanel>
                 </Tabs>
                 {/** Ensemble dropdown menu */}
