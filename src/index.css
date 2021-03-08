@@ -1,11 +1,11 @@
 @font-face {
-    font-family: 'Fira Code';
-    src: local('Fira Code'), url(/fonts/FiraCode-VariableFont_wght.ttf) format('woff');
+    font-family: 'Palatino';
+    src: local('Palatino'), url(/fonts/Palatino.ttf) format('woff');
   }
 
 body {
   margin: 0;
-  font-family: "Fira Code";
+  font-family: "Palatino";
   background: gray;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

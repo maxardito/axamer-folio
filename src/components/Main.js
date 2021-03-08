@@ -32,7 +32,7 @@ const Main = ({ metadata }) => {
 
     const exampleScores = [
         ["ALDRANS", "/score/ALDRANS.pdf"],
-        ["ARZL / THAUR / RINN", "/score/ART.pdf"],
+        ["ARZL / THAUR / RINN", "/score/ATR.pdf"],
         ["BIRGITZ", "/score/BIRGITZ.pdf"],
         ["IGLS", "/score/IGLS.pdf"],
         ["KÜHTAI", "/score/KUHTAI.pdf"],
