@@ -59,7 +59,7 @@ are “separable duos,” or ones can be played as individual solos, can overlap
 pulse can be maintained across the duo, if desired. (For example, the saxophonist
 could begin INZIG after two pages of LANS, and the the two pieces would proceed
 together in the same tempo and metrical structure.)
-– Or, the players can enter a period of asynchronization, and re-orient at a later point by
+- Or, the players can enter a period of asynchronization, and re-orient at a later point by
 means of a pre-arranged cue
 
 Depending on the players' preference, a version may be almost entirely synchronized and
