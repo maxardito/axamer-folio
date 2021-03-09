@@ -38,7 +38,7 @@ const Main = ({ metadata }) => {
         ["KÜHTAI", "/score/KUHTAI.pdf"],
         ["LANS", "/score/LANS.pdf"],
         ["RAITIS", "/score/RAITIS.pdf"],
-        ["VÖLS", "/score/VÖLS.pdf"],
+        ["VÖLS", "/score/VOLS.pdf"],
     ]
 
     function handleTownChange(currentSaxTown, nextSaxTown, currentDrumTown, nextDrumTown) {
